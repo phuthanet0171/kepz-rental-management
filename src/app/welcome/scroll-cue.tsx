@@ -21,7 +21,7 @@ export function ScrollCue() {
       aria-hidden={hidden || undefined}
       tabIndex={hidden ? -1 : undefined}
       className={clsx(
-        "fixed bottom-5 left-1/2 z-40 flex -translate-x-1/2 flex-col items-center gap-0.5 rounded-full bg-white/80 px-4 pt-1.5 pb-1 text-xs font-semibold text-ink/60 shadow-[0_6px_18px_-8px_rgb(0_0_0/0.35)] backdrop-blur transition-[opacity,translate] duration-500 hover:text-ink",
+        "fixed bottom-4 left-1/2 z-40 flex -translate-x-1/2 flex-col items-center text-xs font-medium text-ink/50 transition-[opacity,translate] duration-500 hover:text-ink",
         hidden && "pointer-events-none translate-y-4 opacity-0",
       )}
       style={{ marginBottom: "env(safe-area-inset-bottom)" }}

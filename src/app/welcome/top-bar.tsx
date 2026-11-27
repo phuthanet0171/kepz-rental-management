@@ -83,10 +83,10 @@ export function TopBar() {
         <Link
           href="/login"
           className={clsx(
-            "ml-auto rounded-full border-2 px-5 py-2 text-sm font-bold transition hover:-translate-x-px hover:-translate-y-px active:translate-0",
+            "ml-auto rounded-full border-[1.5px] px-5 py-2 text-sm font-semibold transition",
             solid
-              ? "border-brand bg-brand text-ink"
-              : "border-ink bg-white text-ink shadow-[3px_3px_0_0_#1b1a17] hover:shadow-[4px_4px_0_0_#1b1a17] active:shadow-none",
+              ? "border-white/35 text-white hover:border-brand hover:text-brand"
+              : "border-ink/30 text-ink hover:border-ink hover:bg-ink hover:text-brand",
           )}
         >
           เข้าสู่ระบบ
