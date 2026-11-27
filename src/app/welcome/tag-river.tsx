@@ -134,7 +134,7 @@ function RentTag({ tag, tilt, hidden }: { tag: Tag; tilt: number; hidden: boolea
           aria-hidden
           className={clsx(
             "absolute top-1/2 left-3.5 size-2.5 -translate-y-1/2 rounded-full ring-2",
-            tag.tone === "ink" ? "bg-ink ring-white/40" : "bg-[#f7f5ef] ring-ink/15",
+            tag.tone === "ink" ? "bg-ink ring-white/40" : "bg-white ring-ink/15",
           )}
         />
         <div className="whitespace-nowrap">

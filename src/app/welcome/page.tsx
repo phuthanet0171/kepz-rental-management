@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import type { CSSProperties } from "react";
-import { Reveal } from "@/components/motion/reveal";
 import { ShinyButton } from "@/components/ui/shiny-button";
-import { ArrowRight } from "lucide-react";
+import { ArrowDown, ArrowRight } from "lucide-react";
 import { DayStory } from "./day-story";
+import { anuphan, sriracha } from "./fonts";
+import { StartSteps } from "./start-steps";
 import { TagRiver } from "./tag-river";
 
 export const metadata: Metadata = {
@@ -15,26 +16,19 @@ export const metadata: Metadata = {
 /** หน้าแรกสำหรับคนทั่วไป: ชวนมาใช้ Kepz */
 export default function WelcomePage() {
   return (
-    <div className="min-h-dvh bg-[#f7f5ef] text-[#161513]">
+    <div
+      className={`${anuphan.variable} ${sriracha.variable} min-h-dvh bg-white font-[family-name:var(--font-anuphan)] text-ink`}
+    >
       {/* เปิดการเคลื่อนไหวเฉพาะเมื่อ JS พร้อม ถ้าไม่มี JS เนื้อหาแสดงตามปกติ */}
       <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('motion-ready')" }} />
       <Hero />
       <TagRiver />
-      <section id="day" className="mx-auto max-w-6xl scroll-mt-6 px-5 pt-24 pb-8 sm:pt-32">
-        <Reveal>
-          <h2 className="max-w-2xl text-4xl leading-[1.15] font-bold tracking-tight sm:text-6xl">
-            <Phrases text="หนึ่งวันของคน ปล่อยเช่า" />
-          </h2>
-          <p className="mt-4 max-w-md text-lg text-ink/60">
-            <Phrases text="งานซ้ำ ๆ ที่เคยกินเวลาทั้งวัน เหลือแค่ไม่กี่แตะ" />
-          </p>
-        </Reveal>
-        <DayStory />
-      </section>
+      <DayStory />
+      <StartSteps />
       <Closing />
-      <footer className="flex flex-wrap items-center justify-between gap-3 px-5 py-8 text-sm text-ink/50 sm:px-10">
+      <footer className="flex flex-wrap items-center justify-between gap-3 px-5 py-8 text-sm text-ink/55 sm:px-10">
         <span className="text-lg font-bold text-ink">
-          kepz<span className="text-[#e0b800]">.</span>
+          kepz<span className="text-brand-strong">.</span>
         </span>
         <span>มีอะไรให้เช่า ก็จัดการได้บน Kepz</span>
       </footer>
@@ -80,8 +74,11 @@ function Hero() {
               <ArrowRight className="ink-cta-arrow" strokeWidth={2.5} />
             </span>
           </Link>
-          <a href="#day" className="px-5 py-3 text-base font-semibold underline decoration-2 underline-offset-[6px] hover:decoration-4">
-            ดูหนึ่งวันกับ Kepz
+          <a href="#day" className="group inline-flex items-center gap-3 px-4 py-3 text-base font-semibold">
+            <span className="grid size-10 place-items-center rounded-full border-2 border-ink/80 transition group-hover:bg-ink group-hover:text-brand">
+              <ArrowDown className="nudge-down size-5" strokeWidth={2.5} />
+            </span>
+            เลื่อนลงดูว่าใช้ยังไง
           </a>
         </div>
       </div>
@@ -95,17 +92,25 @@ function intro(ms: number): CSSProperties {
 
 function Closing() {
   return (
-    <section className="px-3 pt-16 pb-6 sm:px-6">
-      <div className="grow-on-scroll mx-auto max-w-6xl rounded-[2rem] bg-ink px-6 py-20 text-center text-white sm:py-28">
-        <h2 className="mx-auto max-w-3xl text-4xl leading-[1.15] font-bold tracking-tight sm:text-6xl">
-          <Phrases text="เริ่มจากของที่คุณ ให้เช่าอยู่วันนี้" />
-        </h2>
-        <p className="mx-auto mt-5 max-w-md text-lg text-white/60">
-          <Phrases text="ห้องเดียวหรือร้อยห้อง แผงเดียวหรือทั้งตลาด เพิ่มอย่างอื่นได้เมื่อพร้อม" />
-        </p>
-        <ShinyButton href="/login" className="mt-10 w-full max-w-xs sm:w-auto">
-          เริ่มใช้งาน Kepz
-        </ShinyButton>
+    <section className="overflow-hidden px-4 pt-10 pb-16 sm:px-6">
+      {/* ป้ายใหญ่ห้อยเชือก: แกว่งเข้ามาเมื่อเลื่อนถึง */}
+      <div className="tag-swing mx-auto max-w-4xl">
+        <svg aria-hidden className="mx-auto block h-16 w-6 overflow-visible" viewBox="0 0 24 64">
+          <path d="M12 0 C 4 22, 20 40, 12 64" fill="none" stroke="#1b1a17" strokeWidth="2.5" strokeLinecap="round" />
+        </svg>
+        <div className="big-tag relative -mt-3 bg-[#1b1a17] px-6 pt-20 pb-16 text-center text-white sm:px-12 sm:pb-20">
+          <span aria-hidden className="absolute top-7 left-1/2 size-6 -translate-x-1/2 rounded-full bg-white ring-4 ring-brand" />
+          <p className="hand text-2xl text-brand">ป้ายนี้ว่าง รอของของคุณอยู่</p>
+          <h2 className="mx-auto mt-4 max-w-3xl text-4xl leading-[1.15] font-bold tracking-tight sm:text-6xl">
+            <Phrases text="เริ่มจากของที่คุณ ให้เช่าอยู่วันนี้" />
+          </h2>
+          <p className="mx-auto mt-5 max-w-lg text-lg leading-relaxed text-white/65">
+            <Phrases text="มีห้องเดียวหรือร้อยห้อง แผงเดียวหรือทั้งตลาด เริ่มได้เลย แล้วค่อยเพิ่มของอย่างอื่นเมื่อพร้อม" />
+          </p>
+          <ShinyButton href="/login" className="mt-10 w-full max-w-xs sm:w-auto">
+            เริ่มใช้งาน Kepz
+          </ShinyButton>
+        </div>
       </div>
     </section>
   );
