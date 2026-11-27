@@ -7,8 +7,8 @@ const HOLD_FIRST = 2800;
 const HOLD = 2000;
 
 /**
- * คำที่สลับในหัวข้อ: หมุนขึ้นแบบป้ายพลิก (คำเก่าเลื่อนขึ้นออก คำใหม่เลื่อนขึ้นมาแทน)
- * แถบเล็กใต้คำค่อยๆ เต็ม บอกผู้ใช้ว่าอีกเดี๋ยวคำจะเปลี่ยน
+ * คำที่สลับในหัวข้อ: กรอบขาวขอบดำอยู่นิ่ง มีแต่คำข้างในที่หมุนขึ้น (คำเก่าออก คำใหม่เข้า)
+ * บรรทัดสูงพอให้สระบน/วรรณยุกต์ไม่ถูกตัด · แถบเล็กใต้กรอบค่อยๆ เต็ม บอกว่าคำกำลังจะเปลี่ยน
  * โปรแกรมอ่านหน้าจอได้ยินประโยคเต็มครั้งเดียว (ดู sr-only ใน page)
  */
 export function RotatingWord() {
@@ -32,20 +32,23 @@ export function RotatingWord() {
 
   return (
     <span aria-hidden className="inline-flex flex-col items-center">
-      <span className="relative inline-grid overflow-hidden px-2 pt-1 pb-3">
-        {/* จองความกว้างไว้เท่าคำที่ยาวที่สุด บรรทัดจะได้ไม่ขยับ */}
-        <Chip className="invisible">เครื่องประดับ</Chip>
+      <span className="hand relative inline-grid overflow-hidden rounded-2xl border-[3px] border-ink bg-white px-6 leading-[1.75] shadow-[4px_4px_0_0_#1b1a17]">
+        {/* จองความกว้างไว้เท่าคำที่ยาวที่สุด กรอบจะได้ไม่ยืดหด */}
+        <span className="invisible col-start-1 row-start-1 whitespace-nowrap">เครื่องประดับ</span>
         {prev !== null && (
-          <Chip key={`out-${prev}-${i}`} className="word-out absolute inset-x-2 top-1">
+          <span key={`out-${prev}-${i}`} className="word-out col-start-1 row-start-1 text-center whitespace-nowrap">
             {WORDS[prev]}
-          </Chip>
+          </span>
         )}
-        <Chip key={`in-${i}`} className={prev !== null ? "word-in absolute inset-x-2 top-1" : "absolute inset-x-2 top-1"}>
+        <span
+          key={`in-${i}`}
+          className={`col-start-1 row-start-1 text-center whitespace-nowrap ${prev !== null ? "word-in" : ""}`}
+        >
           {WORDS[i]}
-        </Chip>
+        </span>
       </span>
       {!still && (
-        <span className="mt-1 h-1 w-16 overflow-hidden rounded-full bg-ink/15">
+        <span className="mt-3 h-1 w-14 overflow-hidden rounded-full bg-ink/15">
           <span
             key={i}
             className="word-timer block h-full rounded-full bg-ink"
@@ -53,16 +56,6 @@ export function RotatingWord() {
           />
         </span>
       )}
-    </span>
-  );
-}
-
-function Chip({ children, className }: { children: string; className?: string }) {
-  return (
-    <span
-      className={`hand col-start-1 row-start-1 block rounded-2xl bg-ink px-5 pt-0.5 pb-1.5 text-center leading-[1.2] whitespace-nowrap text-brand shadow-[3px_3px_0_0_#ffffff] ${className ?? ""}`}
-    >
-      {children}
     </span>
   );
 }

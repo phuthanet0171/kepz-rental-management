@@ -41,23 +41,20 @@ function Hero() {
   return (
     <section id="top" className="relative overflow-hidden bg-brand pt-24 sm:pt-28">
       <div className="relative mx-auto max-w-3xl px-5 pb-10 text-center sm:pb-14">
-        <h1 className="text-[1.9rem] leading-[1.2] font-bold tracking-tight sm:text-5xl">
+        <h1 className="text-[1.7rem] leading-[1.3] font-bold tracking-tight sm:text-[2.6rem]">
           <span className="sr-only">ไม่ว่าคุณจะปล่อยเช่าอะไร ก็จัดการได้ในแบบของคุณ</span>
           <span aria-hidden className="line-rise" style={intro(0)}>
             <span>ไม่ว่าคุณจะปล่อยเช่า</span>
           </span>
-          <span aria-hidden className="intro my-2 block text-[2.4rem] sm:my-3 sm:text-6xl" style={intro(150)}>
+          <span aria-hidden className="intro my-3 block text-[1.9rem] font-normal sm:my-4 sm:text-5xl" style={intro(150)}>
             <RotatingWord />
           </span>
           <span aria-hidden className="line-rise" style={intro(260)}>
             <span>ก็จัดการได้ในแบบของคุณ</span>
           </span>
         </h1>
-        <p className="intro mx-auto mt-6 max-w-lg" style={intro(420)}>
-          <span className="block text-lg font-semibold sm:text-xl">ระบบจัดการธุรกิจให้เช่าครบวงจร</span>
-          <span className="mt-1 block text-base leading-relaxed text-ink/70 sm:text-lg">
-            <Phrases text="หอพัก ที่จอดรถ สิ่งของ และรถ จัดการรายการเช่าได้ในที่เดียว" />
-          </span>
+        <p className="intro mx-auto mt-6 max-w-2xl text-base text-ink/75 sm:text-lg" style={intro(420)}>
+          <Phrases text="ระบบจัดการธุรกิจให้เช่าครบวงจร จัดการรายการเช่าได้ในที่เดียว" />
         </p>
         <div className="intro mt-9 flex justify-center" style={intro(560)}>
           <span className="rainbow-glow w-full max-w-xs sm:w-auto">
