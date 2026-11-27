@@ -867,3 +867,65 @@ dialog::backdrop {
     transform: translateY(14px);
   }
 }
+
+/* ===== ปุ่มเรืองแสงบนพื้นเหลือง (ส่วนบนหน้าแรก): แสงสีขาววิ่งรอบขอบตลอด ===== */
+.shiny-cta.shiny-hero {
+  --shiny-cta-highlight: #ffffff;
+  --shiny-cta-highlight-subtle: #fff6c8;
+  --duration: 2.6s;
+  border-width: 2.5px;
+  padding: 1.15rem 2.75rem;
+  box-shadow:
+    0 14px 30px -14px rgb(0 0 0 / 0.55),
+    inset 0 0 0 1px #2a2a2a;
+}
+.shiny-cta.shiny-hero::before {
+  opacity: 0.7;
+}
+@media (prefers-reduced-motion: reduce) {
+  .shiny-cta,
+  .shiny-cta::before,
+  .shiny-cta::after {
+    animation: none;
+  }
+}
+
+/* ===== ปุ่มส่วนบนหน้าแรก: ขอบสีรุ้งหมุนรอบปุ่ม + แสงรุ้งฟุ้งรอบนอก ===== */
+.shiny-cta.shiny-hero {
+  border-width: 3px;
+  background:
+    linear-gradient(var(--shiny-cta-bg), var(--shiny-cta-bg)) padding-box,
+    conic-gradient(
+        from var(--gradient-angle),
+        #ff5e5e,
+        #ffb347,
+        #ffe14d,
+        #5be38a,
+        #4cc3ff,
+        #8f6bff,
+        #ff6bd6,
+        #ff5e5e
+      )
+      border-box;
+}
+.rainbow-glow {
+  position: relative;
+  display: inline-flex;
+  isolation: isolate;
+}
+.rainbow-glow::before {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  z-index: -1;
+  border-radius: 999px;
+  background: conic-gradient(from var(--gradient-angle), #ff5e5e, #ffb347, #ffe14d, #5be38a, #4cc3ff, #8f6bff, #ff6bd6, #ff5e5e);
+  filter: blur(10px) saturate(1.4);
+  opacity: 0.95;
+  animation: gradient-angle 2.6s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rainbow-glow::before {
+    animation: none;
+  }
+}

@@ -2,24 +2,25 @@
 
 import clsx from "clsx";
 import { useEffect, useRef } from "react";
+import { type ArtKey, RentalArt } from "./rental-art";
 
-type Tag = { title: string; line: string; tone: "paper" | "ink" | "free" };
+type Tag = { title: string; line: string; tone: "paper" | "ink" | "free"; art: ArtKey };
 
 const ROW_A: Tag[] = [
-  { title: "ห้อง S-02", line: "ว่าง · ฿1,600/เดือน", tone: "free" },
-  { title: "แผง A12", line: "เสาร์–อาทิตย์ ฿250/วัน", tone: "paper" },
-  { title: "Yaris กข 1234", line: "คืนวันนี้ 18:00", tone: "ink" },
-  { title: "ที่จอด P-03", line: "รายเดือน ฿990", tone: "paper" },
-  { title: "ชุดราตรีแดง M", line: "จองแล้ว 14–16 ธ.ค.", tone: "ink" },
-  { title: "เต็นท์ 3×3 ม.", line: "ว่าง 12 จาก 20 หลัง", tone: "free" },
+  { title: "ห้อง S-02", line: "ว่าง · ฿1,600/เดือน", tone: "free", art: "storage" },
+  { title: "แผง A12", line: "เสาร์–อาทิตย์ ฿250/วัน", tone: "paper", art: "stall" },
+  { title: "Yaris กข 1234", line: "คืนวันนี้ 18:00", tone: "ink", art: "car" },
+  { title: "ที่จอด P-03", line: "รายเดือน ฿990", tone: "paper", art: "parking" },
+  { title: "ชุดราตรีแดง M", line: "จองแล้ว 14–16 ธ.ค.", tone: "ink", art: "dress" },
+  { title: "เต็นท์ 3×3 ม.", line: "ว่าง 12 จาก 20 หลัง", tone: "free", art: "tent" },
 ];
 const ROW_B: Tag[] = [
-  { title: "กล้อง A7 IV", line: "฿900/วัน + ประกัน ฿5,000", tone: "paper" },
-  { title: "ห้องเช่า 4B", line: "ค้างจ่าย 5 วัน", tone: "ink" },
-  { title: "โกดัง 2", line: "ว่าง · 40 ตร.ม.", tone: "free" },
-  { title: "จักรยาน #07", line: "รายชั่วโมง ฿40", tone: "paper" },
-  { title: "โต๊ะจัดเลี้ยง", line: "ว่าง 64 จาก 100 ตัว", tone: "free" },
-  { title: "ห้องประชุม B", line: "จอง 13:00–15:00", tone: "ink" },
+  { title: "กล้อง A7 IV", line: "฿900/วัน + ประกัน ฿5,000", tone: "paper", art: "camera" },
+  { title: "ห้องเช่า 4B", line: "ค้างจ่าย 5 วัน", tone: "ink", art: "dorm" },
+  { title: "โกดัง 2", line: "ว่าง · 40 ตร.ม.", tone: "free", art: "warehouse" },
+  { title: "จักรยาน #07", line: "รายชั่วโมง ฿40", tone: "paper", art: "bike" },
+  { title: "โต๊ะจัดเลี้ยง", line: "ว่าง 64 จาก 100 ตัว", tone: "free", art: "table" },
+  { title: "ห้องประชุม B", line: "จอง 13:00–15:00", tone: "ink", art: "meeting" },
 ];
 
 /** ป้ายเช่าไหลผ่านจอเป็นแนวโค้ง: โค้งเข้ามาจากขอบ แบนราบตรงกลาง แล้วจางหายอีกฝั่ง */
@@ -28,6 +29,7 @@ export function TagRiver() {
     <section aria-label="ตัวอย่างสิ่งที่จัดการได้บน Kepz" className="-mt-12 overflow-hidden pb-4">
       <TagRow tags={ROW_A} speed={34} />
       <TagRow tags={ROW_B} speed={-28} />
+      <p className="mt-3 px-5 text-center text-[15px] text-ink/55">ตัวอย่างของให้เช่าที่ดูแลบน Kepz ได้ ทั้งรายเดือน รายวัน และรายชั่วโมง</p>
     </section>
   );
 }
@@ -122,7 +124,7 @@ function RentTag({ tag, tilt, hidden }: { tag: Tag; tilt: number; hidden: boolea
     <div aria-hidden={hidden || undefined} className="tag-item shrink-0">
       <div
         className={clsx(
-          "relative flex items-center gap-4 rounded-[14px] py-4 pr-6 pl-9 sm:py-5 sm:pr-8 sm:pl-11 shadow-[0_10px_24px_-14px_rgb(22_21_19/0.45)]",
+          "relative flex items-center gap-3.5 rounded-[18px] py-3 pr-6 pl-8 sm:gap-4 sm:py-3.5 sm:pr-7 sm:pl-10 shadow-[0_10px_24px_-14px_rgb(22_21_19/0.45)]",
           tag.tone === "paper" && "bg-white text-ink",
           tag.tone === "ink" && "bg-ink text-white",
           tag.tone === "free" && "bg-[#e3f4ea] text-[#145c33]",
@@ -137,6 +139,7 @@ function RentTag({ tag, tilt, hidden }: { tag: Tag; tilt: number; hidden: boolea
             tag.tone === "ink" ? "bg-ink ring-white/40" : "bg-white ring-ink/15",
           )}
         />
+        <RentalArt art={tag.art} className="size-14 shrink-0 sm:size-16" />
         <div className="whitespace-nowrap">
           <div className="text-base leading-tight font-bold sm:text-lg">{tag.title}</div>
           <div className={clsx("text-sm", tag.tone === "ink" ? "text-white/65" : "opacity-70")}>{tag.line}</div>
