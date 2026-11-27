@@ -80,28 +80,17 @@ export function TopBar() {
           })}
         </ul>
 
-        <div className="ml-auto flex items-center gap-2 sm:gap-3">
-          <Link
-            href="/login"
-            className={clsx(
-              "rounded-full px-3 py-2 text-sm font-semibold transition sm:px-4",
-              solid ? "text-white/80 hover:text-white" : "text-ink/80 hover:text-ink",
-            )}
-          >
-            เข้าสู่ระบบ
-          </Link>
-          <Link
-            href="/signup"
-            className={clsx(
-              "rounded-full border-2 px-4 py-2 text-sm font-bold transition hover:-translate-x-px hover:-translate-y-px active:translate-0",
-              solid
-                ? "border-brand bg-brand text-ink"
-                : "border-ink bg-white text-ink shadow-[3px_3px_0_0_#1b1a17] hover:shadow-[4px_4px_0_0_#1b1a17] active:shadow-none",
-            )}
-          >
-            เริ่มใช้งาน
-          </Link>
-        </div>
+        <Link
+          href="/login"
+          className={clsx(
+            "ml-auto rounded-full border-2 px-5 py-2 text-sm font-bold transition hover:-translate-x-px hover:-translate-y-px active:translate-0",
+            solid
+              ? "border-brand bg-brand text-ink"
+              : "border-ink bg-white text-ink shadow-[3px_3px_0_0_#1b1a17] hover:shadow-[4px_4px_0_0_#1b1a17] active:shadow-none",
+          )}
+        >
+          เข้าสู่ระบบ
+        </Link>
       </nav>
     </header>
   );

@@ -110,7 +110,7 @@ function TagRow({ tags, speed }: { tags: Tag[]; speed: number }) {
   }, [speed]);
 
   return (
-    <div ref={rowRef} className="tag-row py-4">
+    <div ref={rowRef} className="tag-row py-2.5">
       <div ref={trackRef} className="tag-track">
         {[...tags, ...tags].map((t, i) => (
           <RentTag key={i} tag={t} tilt={((i * 37) % 7) - 3} hidden={i >= tags.length} />
@@ -125,23 +125,23 @@ function RentTag({ tag, tilt, hidden }: { tag: Tag; tilt: number; hidden: boolea
   return (
     <div aria-hidden={hidden || undefined} className="tag-item shrink-0">
       <div
-        className="flex items-center gap-3.5 rounded-2xl bg-white py-2.5 pr-6 pl-2.5 text-ink shadow-[0_12px_28px_-16px_rgb(22_21_19/0.5)] sm:gap-4 sm:pr-7"
+        className="flex items-center gap-3 rounded-xl bg-white py-2 pr-5 pl-2 text-ink shadow-[0_10px_22px_-14px_rgb(22_21_19/0.5)]"
         style={{ rotate: `${tilt * 0.4}deg` }}
       >
         <Image
           src={`/rentals/${tag.art}.webp`}
           alt=""
-          width={80}
-          height={80}
+          width={56}
+          height={56}
           draggable={false}
           loading="eager"
           unoptimized
-          className="size-16 shrink-0 rounded-xl object-cover sm:size-20"
+          className="size-11 shrink-0 rounded-lg object-cover sm:size-14"
         />
         <div className="whitespace-nowrap">
-          <div className="text-base leading-tight font-bold sm:text-lg">{tag.title}</div>
-          <div className="mt-1 flex items-center gap-1.5 text-sm text-ink/60">
-            <span className={clsx("size-2 rounded-full", DOT[tag.tone])} />
+          <div className="text-sm leading-tight font-bold sm:text-[15px]">{tag.title}</div>
+          <div className="mt-0.5 flex items-center gap-1.5 text-xs text-ink/60 sm:text-[13px]">
+            <span className={clsx("size-1.5 rounded-full", DOT[tag.tone])} />
             {tag.line}
           </div>
         </div>
