@@ -4,7 +4,6 @@ import type { CSSProperties } from "react";
 import { ShinyButton } from "@/components/ui/shiny-button";
 import { ArrowDown } from "lucide-react";
 import { CompareStory } from "./compare-story";
-import { HeroCards } from "./hero-cards";
 import { RotatingWord } from "./rotating-word";
 import { sriracha } from "@/lib/hand-font";
 import { StartSteps } from "./start-steps";
@@ -25,7 +24,6 @@ export default function WelcomePage() {
       <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('motion-ready')" }} />
       <TopBar />
       <Hero />
-      <TagRiver />
       <CompareStory />
       <StartSteps />
       <Closing />
@@ -65,15 +63,14 @@ function TopBar() {
 
 function Hero() {
   return (
-    <section className="relative flex min-h-[92svh] flex-col justify-center overflow-hidden bg-brand pt-24">
-      <HeroCards />
-      <div className="relative mx-auto max-w-3xl px-5 pb-28 text-center sm:pb-32">
-        <h1 className="text-[2.4rem] leading-[1.15] font-bold tracking-tight sm:text-6xl">
+    <section className="relative overflow-hidden bg-brand pt-28 sm:pt-32">
+      <div className="relative mx-auto max-w-3xl px-5 pb-10 text-center sm:pb-14">
+        <h1 className="text-[1.9rem] leading-[1.2] font-bold tracking-tight sm:text-5xl">
           <span className="sr-only">ไม่ว่าคุณจะปล่อยเช่าอะไร ก็จัดการได้ในแบบของคุณ</span>
           <span aria-hidden className="line-rise" style={intro(0)}>
             <span>ไม่ว่าคุณจะปล่อยเช่า</span>
           </span>
-          <span aria-hidden className="intro my-2 block text-[3rem] sm:my-3 sm:text-[5.5rem]" style={intro(150)}>
+          <span aria-hidden className="intro my-2 block text-[2.4rem] sm:my-3 sm:text-6xl" style={intro(150)}>
             <RotatingWord />
           </span>
           <span aria-hidden className="line-rise" style={intro(260)}>
@@ -92,10 +89,13 @@ function Hero() {
         </div>
       </div>
 
+      {/* ของให้เช่าที่ไหลผ่าน: จุดเด่นของส่วนบน */}
+      <TagRiver />
+
       {/* ชวนเลื่อนลง: เล็ก จาง ขยับเบาๆ */}
       <a
         href="#story"
-        className="intro absolute bottom-8 left-1/2 flex -translate-x-1/2 flex-col items-center gap-1 text-sm font-medium text-ink/45 transition hover:text-ink"
+        className="intro mx-auto flex w-fit flex-col items-center gap-1 pt-4 pb-8 text-sm font-medium text-ink/45 transition hover:text-ink"
         style={intro(900)}
       >
         เลื่อนลง
