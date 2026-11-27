@@ -2,7 +2,7 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { isSupabaseConfigured, supabaseKey, supabaseUrl } from "@/lib/supabase/env";
 
-const PUBLIC_PATHS = ["/login", "/setup"];
+const PUBLIC_PATHS = ["/login", "/setup", "/welcome"];
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -36,6 +36,8 @@ export async function proxy(request: NextRequest) {
     if (pathname.startsWith("/api/")) {
       return NextResponse.json({ error: "กรุณาเข้าสู่ระบบ" }, { status: 401 });
     }
+    // ยังไม่ได้เข้าสู่ระบบแล้วเปิดหน้าแรก → หน้าแนะนำ Kepz (ชวนมาใช้งาน)
+    if (pathname === "/") return NextResponse.redirect(new URL("/welcome", request.url));
     const url = new URL("/login", request.url);
     if (pathname !== "/") url.searchParams.set("next", pathname + request.nextUrl.search);
     return NextResponse.redirect(url);
