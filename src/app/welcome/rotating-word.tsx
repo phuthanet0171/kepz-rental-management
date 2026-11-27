@@ -53,7 +53,7 @@ export function RotatingWord() {
   }, [prev]);
 
   return (
-    <span aria-hidden className="hand relative mx-1 inline-block align-middle font-normal select-none">
+    <span aria-hidden className="hand relative inline-block font-normal select-none">
       {/* ตัววัดความกว้าง (มองไม่เห็น) */}
       <span ref={measure} className="invisible absolute top-0 left-0 w-max px-5 whitespace-nowrap">
         {WORDS[i]}

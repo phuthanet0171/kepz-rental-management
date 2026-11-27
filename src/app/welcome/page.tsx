@@ -37,36 +37,43 @@ export default function WelcomePage() {
   );
 }
 
+/**
+ * ส่วนบนสูงพอดีหนึ่งจอ: กลุ่มหัวข้ออยู่กึ่งกลางพื้นที่เหนือแถบการ์ด
+ * แถบการ์ด + คำอธิบาย + "เลื่อนลง" เป็นแถบล่างของจอ ระยะห่างใช้จังหวะเดียวกัน (8 / 16 / 32)
+ */
 function Hero() {
   return (
-    <section id="top" className="relative overflow-hidden bg-brand pt-24 sm:pt-28">
-      <div className="relative mx-auto max-w-3xl px-5 pb-10 text-center sm:pb-14">
-        <h1 className="text-[1.7rem] leading-[1.45] font-bold tracking-tight text-balance sm:text-[2.6rem]">
-          <span className="sr-only">ไม่ว่าคุณจะปล่อยเช่าอะไร ก็จัดการได้ในแบบของคุณ</span>
-          <span aria-hidden className="intro block" style={intro(0)}>
-            ไม่ว่าคุณจะปล่อยเช่า <RotatingWord />
-          </span>
-          <span aria-hidden className="intro mt-2 block sm:mt-3" style={intro(200)}>
-            ก็จัดการได้ในแบบของคุณ
-          </span>
-        </h1>
-        <p className="intro mx-auto mt-6 max-w-2xl text-base text-ink/75 sm:text-lg" style={intro(420)}>
-          <Phrases text="ระบบจัดการธุรกิจให้เช่าครบวงจร จัดการรายการเช่าได้ในที่เดียว" />
-        </p>
-        <div className="intro mt-9 flex justify-center" style={intro(560)}>
-          <span className="rainbow-glow w-full max-w-xs sm:w-auto">
-            <ShinyButton href="/signup" className="shiny-hero w-full">
-              เริ่มใช้งาน Kepz
-            </ShinyButton>
-          </span>
+    <section id="top" className="relative flex min-h-[100svh] flex-col overflow-hidden bg-brand pt-16">
+      <div className="flex flex-1 items-center justify-center px-5 py-10 sm:py-12">
+        <div className="mx-auto max-w-3xl text-center">
+          <h1 className="text-[1.7rem] leading-[1.35] font-bold tracking-tight sm:text-[2.6rem]">
+            <span className="sr-only">ไม่ว่าคุณจะปล่อยเช่าอะไร ก็จัดการได้ในแบบของคุณ</span>
+            <span aria-hidden className="intro flex flex-wrap items-center justify-center gap-x-3 gap-y-2" style={intro(0)}>
+              <span>ไม่ว่าคุณจะปล่อยเช่า</span>
+              <RotatingWord />
+            </span>
+            <span aria-hidden className="intro mt-3 block sm:mt-4" style={intro(200)}>
+              ก็จัดการได้ในแบบของคุณ
+            </span>
+          </h1>
+          <p className="intro mx-auto mt-4 max-w-2xl text-base text-ink/75 sm:text-lg" style={intro(420)}>
+            <Phrases text="ระบบจัดการธุรกิจให้เช่าครบวงจร จัดการรายการเช่าได้ในที่เดียว" />
+          </p>
+          <div className="intro mt-8 flex justify-center" style={intro(560)}>
+            <span className="rainbow-glow w-full max-w-xs sm:w-auto">
+              <ShinyButton href="/signup" className="shiny-hero w-full">
+                เริ่มใช้งาน Kepz
+              </ShinyButton>
+            </span>
+          </div>
         </div>
       </div>
 
-      {/* ของให้เช่าที่ไหลผ่าน: จุดเด่นของส่วนบน */}
-      <TagRiver />
-
+      {/* แถบล่าง: ของให้เช่าที่ไหลผ่าน + ที่ว่างให้ "เลื่อนลง" ไม่ทับคำอธิบาย */}
+      <div className="pb-20">
+        <TagRiver />
+      </div>
       <ScrollCue />
-      <div className="h-6" />
     </section>
   );
 }
