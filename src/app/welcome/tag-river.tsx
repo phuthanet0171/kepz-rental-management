@@ -30,7 +30,7 @@ export function TagRiver() {
     <section aria-label="ตัวอย่างสิ่งที่จัดการได้บน Kepz" className="overflow-hidden pt-2 pb-4">
       <TagRow tags={ROW_A} speed={34} />
       <TagRow tags={ROW_B} speed={-28} />
-      <p className="mt-3 px-5 text-center text-[15px] text-ink/55">ตัวอย่างของให้เช่าที่ดูแลบน Kepz ได้ ทั้งรายเดือน รายวัน และรายชั่วโมง</p>
+      <p className="mt-2 px-5 text-center text-xs text-ink/50">ตัวอย่างของให้เช่าที่ดูแลบน Kepz ได้ ทั้งรายเดือน รายวัน และรายชั่วโมง</p>
     </section>
   );
 }
@@ -125,7 +125,7 @@ function RentTag({ tag, tilt, hidden }: { tag: Tag; tilt: number; hidden: boolea
   return (
     <div aria-hidden={hidden || undefined} className="tag-item shrink-0">
       <div
-        className="flex items-center gap-3 rounded-xl bg-white py-2 pr-5 pl-2 text-ink shadow-[0_10px_22px_-14px_rgb(22_21_19/0.5)]"
+        className="flex items-center gap-2.5 rounded-xl bg-white py-1.5 pr-4 pl-1.5 text-ink shadow-[0_10px_22px_-14px_rgb(22_21_19/0.5)]"
         style={{ rotate: `${tilt * 0.4}deg` }}
       >
         <Image
@@ -136,11 +136,11 @@ function RentTag({ tag, tilt, hidden }: { tag: Tag; tilt: number; hidden: boolea
           draggable={false}
           loading="eager"
           unoptimized
-          className="size-11 shrink-0 rounded-lg object-cover sm:size-14"
+          className="size-10 shrink-0 rounded-lg object-cover sm:size-12"
         />
         <div className="whitespace-nowrap">
-          <div className="text-sm leading-tight font-bold sm:text-[15px]">{tag.title}</div>
-          <div className="mt-0.5 flex items-center gap-1.5 text-xs text-ink/60 sm:text-[13px]">
+          <div className="text-[13px] leading-tight font-bold sm:text-sm">{tag.title}</div>
+          <div className="mt-0.5 flex items-center gap-1.5 text-[11px] text-ink/60 sm:text-xs">
             <span className={clsx("size-1.5 rounded-full", DOT[tag.tone])} />
             {tag.line}
           </div>

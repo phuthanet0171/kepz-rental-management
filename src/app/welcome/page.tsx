@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 import { ShinyButton } from "@/components/ui/shiny-button";
-import { ArrowDown } from "lucide-react";
 import { CompareStory } from "./compare-story";
 import { RotatingWord } from "./rotating-word";
+import { ScrollCue } from "./scroll-cue";
 import { sriracha } from "@/lib/hand-font";
 import { StartSteps } from "./start-steps";
 import { TagRiver } from "./tag-river";
@@ -65,15 +65,8 @@ function Hero() {
       {/* ของให้เช่าที่ไหลผ่าน: จุดเด่นของส่วนบน */}
       <TagRiver />
 
-      {/* ชวนเลื่อนลง: เล็ก จาง ขยับเบาๆ */}
-      <a
-        href="#story"
-        className="intro mx-auto flex w-fit flex-col items-center gap-1 pt-4 pb-8 text-sm font-medium text-ink/45 transition hover:text-ink"
-        style={intro(900)}
-      >
-        เลื่อนลง
-        <ArrowDown className="nudge-down size-4" strokeWidth={2.5} />
-      </a>
+      <ScrollCue />
+      <div className="h-6" />
     </section>
   );
 }
