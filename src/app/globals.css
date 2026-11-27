@@ -926,3 +926,17 @@ dialog::backdrop {
     animation: none;
   }
 }
+
+/* ===== ของแขวนส่วนบนหน้าแรก (ป้ายให้เช่า / พวงกุญแจ) ===== */
+.prop-swing {
+  transform-origin: 50% 8px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .prop-swing {
+    animation: key-sway 4.5s ease-in-out infinite;
+    animation-delay: var(--d, 0s);
+  }
+  .prop-swing:hover {
+    animation: key-swing 1.6s cubic-bezier(0.36, 0, 0.3, 1);
+  }
+}

@@ -4,6 +4,7 @@ import type { CSSProperties } from "react";
 import { ShinyButton } from "@/components/ui/shiny-button";
 import { ArrowDown } from "lucide-react";
 import { CompareStory } from "./compare-story";
+import { KeyRing, RentSign } from "./hero-props";
 import { sriracha } from "@/lib/hand-font";
 import { StartSteps } from "./start-steps";
 import { TagRiver } from "./tag-river";
@@ -54,7 +55,11 @@ function Hero() {
         </Link>
       </header>
 
-      <div className="mx-auto max-w-6xl px-5 pt-14 pb-36 text-center sm:pt-20 sm:pb-44">
+      <div className="relative mx-auto max-w-6xl px-5 pt-14 pb-36 text-center sm:pt-20 sm:pb-44">
+        {/* ของแขวนจริงในโลกการปล่อยเช่า ห้อยลงมาจากขอบบน */}
+        <RentSign className="intro absolute top-0 left-2 hidden w-40 lg:block xl:-left-4 xl:w-48" />
+        <KeyRing className="intro absolute top-0 right-4 hidden w-36 lg:block xl:right-0 xl:w-44" />
+        <KeyRing className="intro mx-auto -mt-8 mb-4 w-24 lg:hidden" />
         <h1 className="text-[3.1rem] leading-[1.08] font-bold tracking-[-0.03em] sm:text-[6.5rem]">
           <span className="line-rise" style={intro(0)}>
             <span>มีอะไรให้เช่า</span>
@@ -63,11 +68,8 @@ function Hero() {
             <span>ก็จัดการได้</span>
           </span>
         </h1>
-        <p className="intro mx-auto mt-7 max-w-xl text-lg leading-relaxed text-ink/80 sm:text-xl" style={intro(420)}>
-          <Phrases text="Kepz คือโปรแกรมจัดการธุรกิจให้เช่า ใช้ทำสัญญา ออกบิล รับเงิน และดูว่าอะไรว่าง ได้จากมือถือ" />
-        </p>
-        <p className="intro mx-auto mt-3 max-w-xl text-[15px] text-ink/60 sm:text-base" style={intro(480)}>
-          <Phrases text="เหมาะกับ หอพัก ห้องเก็บของ ที่จอดรถ แผงตลาด รถเช่า และอุปกรณ์ให้เช่า" />
+        <p className="intro mx-auto mt-7 max-w-md text-lg leading-relaxed text-ink/80 sm:text-xl" style={intro(420)}>
+          <Phrases text="ออกบิล รับเงิน ดูว่าอะไรว่าง ในมือถือเครื่องเดียว" />
         </p>
         <div className="intro mt-10 flex justify-center" style={intro(560)}>
           <span className="rainbow-glow w-full max-w-xs sm:w-auto">
