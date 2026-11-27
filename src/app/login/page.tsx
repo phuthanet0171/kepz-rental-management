@@ -45,7 +45,7 @@ export default function LoginPage({ searchParams }: PageProps<"/login">) {
       </Suspense>
       <p className="mt-8 text-center text-[15px] text-muted">
         ยังไม่มีบัญชี?{" "}
-        <Link href="/signup" className="font-semibold text-ink underline decoration-2 underline-offset-4">
+        <Link href="/signup" className="-my-2 inline-block py-2 font-semibold text-ink underline decoration-2 underline-offset-4">
           สมัครใช้งาน
         </Link>
       </p>

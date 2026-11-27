@@ -39,7 +39,7 @@ export default function SignupPage() {
       <SignupForm />
       <p className="mt-8 text-center text-[15px] text-muted">
         มีบัญชีอยู่แล้ว?{" "}
-        <Link href="/login" className="font-semibold text-ink underline decoration-2 underline-offset-4">
+        <Link href="/login" className="-my-2 inline-block py-2 font-semibold text-ink underline decoration-2 underline-offset-4">
           เข้าสู่ระบบ
         </Link>
       </p>

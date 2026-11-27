@@ -1,6 +1,5 @@
 import clsx from "clsx";
 import { Check } from "lucide-react";
-import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 import { Reveal } from "@/components/motion/reveal";
 import { ShinyButton } from "@/components/ui/shiny-button";
@@ -44,14 +43,11 @@ export function StartSteps() {
       <div className="mx-auto grid max-w-6xl gap-12 px-5 pt-20 pb-20 sm:pt-28 sm:pb-28 lg:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)] lg:gap-16">
         <div className="lg:sticky lg:top-28 lg:self-start">
           <Reveal>
-            <h2 id="start-title" className="text-4xl leading-[1.15] font-bold tracking-tight sm:text-6xl">
+            <h2 id="start-title" className="text-3xl leading-[1.2] font-bold tracking-tight sm:text-[2.6rem]">
               เริ่มใช้ได้<span className="inline-block">ใน 3 ขั้น</span>
             </h2>
-            <p className="mt-4 max-w-md text-lg leading-relaxed text-ink/70">
-              <Phrases text="ตั้งค่าครั้งแรกครั้งเดียว เดือนต่อไป แค่กดออกบิล กับกดรับเงิน" />
-            </p>
           </Reveal>
-          <Reveal delay={200} className="mt-10 hidden lg:block">
+          <Reveal delay={200} className="mt-8 hidden lg:block">
             <StartCta />
           </Reveal>
         </div>
@@ -83,7 +79,7 @@ export function StartSteps() {
               <Node done>
                 <Check className="size-6" strokeWidth={3.5} />
               </Node>
-              <p className="text-xl font-bold sm:text-2xl">เสร็จแล้ว ออกบิลแรกได้เลย</p>
+              <p className="text-xl font-bold sm:text-2xl"><Phrases text="เสร็จแล้ว ออกบิลแรกได้เลย" /></p>
             </Reveal>
           </ol>
 
@@ -115,8 +111,9 @@ function StartCta() {
   return (
     <div>
       <p className="hand flex items-end gap-1 text-[22px] leading-none">
-        ขั้นที่ 1 เริ่มตรงนี้
-        <svg aria-hidden viewBox="0 0 40 34" className="mb-[-14px] h-8 w-10 overflow-visible">
+        {/* ตัวอักษรไล่สีเป็นประกายวิ่งผ่าน */}
+        <span className="shimmer-text">ขั้นที่ 1 เริ่มตรงนี้</span>
+        <svg aria-hidden viewBox="0 0 40 34" className="point-nudge mb-[-14px] h-8 w-10 overflow-visible">
           <path d="M3 4 C 22 4, 32 12, 30 30" fill="none" stroke="#1b1a17" strokeWidth="2.5" strokeLinecap="round" />
           <path d="M23 24 L30 31 L36 23" fill="none" stroke="#1b1a17" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
@@ -126,21 +123,13 @@ function StartCta() {
           เริ่มใช้งาน Kepz
         </ShinyButton>
       </span>
-      <ul className="mt-6 space-y-2 text-[15px] font-medium text-ink/75">
-        {["ไม่ต้องติดตั้งโปรแกรม", "ใช้บนมือถือหรือคอมก็ได้"].map((t) => (
-          <li key={t} className="flex items-center gap-2">
-            <span className="grid size-5 place-items-center rounded-full bg-ink text-brand">
-              <Check className="size-3" strokeWidth={3.5} />
-            </span>
-            {t}
-          </li>
-        ))}
-      </ul>
-      <p className="mt-5 text-[15px] text-ink/65">
-        มีบัญชีอยู่แล้ว?{" "}
-        <Link href="/login" className="font-semibold text-ink underline decoration-ink/40 decoration-2 underline-offset-4 hover:decoration-ink">
-          เข้าสู่ระบบ
-        </Link>
+      <p className="mt-6 flex max-w-sm items-start gap-2 text-[15px] leading-relaxed font-medium text-ink/75">
+        <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-ink text-brand">
+          <Check className="size-3" strokeWidth={3.5} />
+        </span>
+        <span>
+          <Phrases text="ไม่ต้องติดตั้งโปรแกรม ใช้งานผ่านเว็บไซต์ บนแพลตฟอร์มใดก็ได้" />
+        </span>
       </p>
     </div>
   );
