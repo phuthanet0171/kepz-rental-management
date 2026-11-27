@@ -1,338 +1,173 @@
 import clsx from "clsx";
-import {
-  ArrowRight,
-  BellRing,
-  Bike,
-  Camera,
-  Car,
-  Check,
-  FileText,
-  LayoutGrid,
-  ParkingSquare,
-  PiggyBank,
-  ReceiptText,
-  Shirt,
-  Smartphone,
-  Store,
-  Tent,
-  Users,
-  Warehouse,
-} from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import type { ReactNode } from "react";
+import type { CSSProperties } from "react";
+import { Reveal } from "@/components/motion/reveal";
 import { ShinyButton } from "@/components/ui/shiny-button";
+import { DayStory } from "./day-story";
 
 export const metadata: Metadata = {
   title: { absolute: "Kepz — มีอะไรให้เช่า ก็จัดการได้บน Kepz" },
   description: "ระบบจัดการธุรกิจให้เช่า ห้อง ที่จอด แผงตลาด รถ ชุด อุปกรณ์ ทำสัญญา ออกบิล รับเงิน ครบในที่เดียว ใช้บนมือถือได้",
 };
 
-/** หน้าแรกสำหรับคนทั่วไป (ยังไม่ได้เข้าสู่ระบบ): ชวนมาใช้งาน */
+/** หน้าแรกสำหรับคนทั่วไป: ชวนมาใช้ Kepz */
 export default function WelcomePage() {
   return (
-    <div className="min-h-dvh bg-canvas text-ink">
-      <TopBar />
+    <div className="min-h-dvh bg-[#f7f5ef] text-[#161513]">
+      {/* เปิดการเคลื่อนไหวเฉพาะเมื่อ JS พร้อม ถ้าไม่มี JS เนื้อหาแสดงตามปกติ */}
+      <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('motion-ready')" }} />
       <Hero />
-      <RentAnything />
-      <HowItWorks />
-      <Features />
-      <FinalCta />
-      <footer className="px-5 py-8 text-center text-sm text-muted">
-        <span className="font-bold text-ink">
-          kepz<span className="text-brand-strong">.</span>
-        </span>{" "}
-        · มีอะไรให้เช่า ก็จัดการได้บน Kepz
+      <TagRiver />
+      <section id="day" className="mx-auto max-w-6xl scroll-mt-6 px-5 pt-24 pb-8 sm:pt-32">
+        <Reveal>
+          <h2 className="max-w-2xl text-4xl leading-[1.15] font-bold tracking-tight sm:text-6xl">
+            <Phrases text="หนึ่งวันของคน ปล่อยเช่า" />
+          </h2>
+          <p className="mt-4 max-w-md text-lg text-ink/60">
+            <Phrases text="งานซ้ำ ๆ ที่เคยกินเวลาทั้งวัน เหลือแค่ไม่กี่แตะ" />
+          </p>
+        </Reveal>
+        <DayStory />
+      </section>
+      <Closing />
+      <footer className="flex flex-wrap items-center justify-between gap-3 px-5 py-8 text-sm text-ink/50 sm:px-10">
+        <span className="text-lg font-bold text-ink">
+          kepz<span className="text-[#e0b800]">.</span>
+        </span>
+        <span>มีอะไรให้เช่า ก็จัดการได้บน Kepz</span>
       </footer>
     </div>
   );
 }
 
-function Logo({ dark }: { dark?: boolean }) {
-  return (
-    <span className={clsx("text-2xl font-bold tracking-tight", dark ? "text-white" : "text-ink")}>
-      kepz<span className="text-brand">.</span>
-    </span>
-  );
-}
-
-function TopBar() {
-  return (
-    <header className="sticky top-0 z-30 bg-ink/95 backdrop-blur" style={{ paddingTop: "env(safe-area-inset-top)" }}>
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5">
-        <Link href="/welcome" aria-label="Kepz หน้าแรก">
-          <Logo dark />
-        </Link>
-        <nav className="hidden items-center gap-7 text-sm font-medium text-white/70 md:flex">
-          <a href="#rent" className="hover:text-white">
-            ให้เช่าอะไรได้บ้าง
-          </a>
-          <a href="#how" className="hover:text-white">
-            วิธีใช้งาน
-          </a>
-          <a href="#features" className="hover:text-white">
-            ฟีเจอร์
-          </a>
-        </nav>
-        <div className="flex items-center gap-2">
-          <Link href="/login" className="rounded-full px-4 py-2 text-sm font-medium text-white/80 hover:text-white max-sm:hidden">
-            เข้าสู่ระบบ
-          </Link>
-          <Link
-            href="/login"
-            className="rounded-full bg-brand px-4 py-2 text-sm font-semibold text-ink transition hover:bg-brand-strong active:scale-95"
-          >
-            เริ่มใช้งาน
-          </Link>
-        </div>
-      </div>
-    </header>
-  );
-}
-
 function Hero() {
   return (
-    <section className="overflow-hidden bg-ink text-white">
-      <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 pt-14 pb-16 lg:grid-cols-[1.1fr_1fr] lg:pt-20 lg:pb-24">
-        <div className="text-center lg:text-left">
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/15 px-3 py-1 text-xs text-white/70">
-            <span className="size-1.5 rounded-full bg-brand" /> ระบบจัดการธุรกิจให้เช่า
-          </span>
-          <h1 className="mt-5 text-[2.6rem] leading-[1.2] font-bold tracking-tight sm:text-6xl sm:leading-[1.15]">
+    <section className="relative bg-brand">
+      <header
+        className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5"
+        style={{ paddingTop: "env(safe-area-inset-top)" }}
+      >
+        <span className="text-2xl font-bold tracking-tight">
+          kepz<span className="text-white">.</span>
+        </span>
+        <Link href="/login" className="rounded-full px-4 py-2 text-sm font-semibold hover:bg-ink/10">
+          เข้าสู่ระบบ
+        </Link>
+      </header>
+
+      <div className="mx-auto max-w-6xl px-5 pt-14 pb-24 text-center sm:pt-20 sm:pb-32">
+        <h1 className="text-[3.1rem] leading-[1.08] font-bold tracking-[-0.03em] sm:text-[6.5rem]">
+          <span className="intro block" style={intro(0)}>
             มีอะไรให้เช่า
-            <br />
-            ก็จัดการได้บน <span className="text-brand">Kepz.</span>
-          </h1>
-          <p className="mx-auto mt-5 max-w-md text-base leading-relaxed text-white/65 sm:text-lg lg:mx-0">
-            <Phrases text="ห้อง ที่จอด แผงตลาด รถ ชุด หรืออุปกรณ์ ทำสัญญา ออกบิล รับเงิน และดูว่าอะไรว่าง ครบในที่เดียว ใช้บนมือถือได้ทุกที่" />
-          </p>
-          <div className="mx-auto mt-8 flex max-w-sm flex-col gap-3 sm:max-w-none sm:flex-row sm:justify-center lg:justify-start">
-            <Link
-              href="/login"
-              className="inline-flex h-13 items-center justify-center gap-2 rounded-full bg-brand px-7 text-base font-semibold text-ink transition hover:bg-brand-strong active:scale-[0.98]"
-            >
-              เริ่มใช้งาน <ArrowRight className="size-4" />
-            </Link>
-            <a
-              href="#how"
-              className="inline-flex h-13 items-center justify-center rounded-full border border-white/25 px-7 text-base font-medium text-white transition hover:bg-white/10"
-            >
-              ดูวิธีใช้งาน
-            </a>
-          </div>
+          </span>
+          <span className="intro block" style={intro(120)}>
+            ก็จัดการได้
+          </span>
+        </h1>
+        <p className="intro mx-auto mt-7 max-w-lg text-lg leading-relaxed text-ink/70 sm:text-xl" style={intro(260)}>
+          <Phrases text="ห้อง ที่จอด แผงตลาด รถ ชุด อุปกรณ์ ทำสัญญา ออกบิล รับเงิน และดูว่าอะไรว่าง บนมือถือเครื่องเดียว" />
+        </p>
+        <div className="intro mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center" style={intro(380)}>
+          <Link
+            href="/login"
+            className="inline-flex h-14 w-full max-w-xs items-center justify-center rounded-full bg-ink px-9 text-lg font-semibold text-white transition hover:bg-black active:scale-[0.98] sm:w-auto"
+          >
+            เริ่มใช้งาน Kepz
+          </Link>
+          <a href="#day" className="px-5 py-3 text-base font-semibold underline decoration-2 underline-offset-[6px] hover:decoration-4">
+            ดูหนึ่งวันกับ Kepz
+          </a>
         </div>
-        <PhoneMock />
       </div>
     </section>
   );
 }
 
-/** ตัวอย่างหน้าจอแอป (วาดด้วย HTML ไม่ใช้รูป) */
-function PhoneMock() {
-  return (
-    <div className="relative mx-auto w-full max-w-[300px]">
-      {/* ป้ายลอยรอบโทรศัพท์ */}
-      <FloatChip className="-top-4 -left-6 max-sm:left-0" icon={<Check className="size-3.5" />} tone="ok">
-        รับชำระแล้ว +฿1,600
-      </FloatChip>
-      <FloatChip className="-right-10 bottom-20 max-sm:right-0 max-sm:-bottom-4" icon={<FileText className="size-3.5" />}>
-        สัญญาใหม่ · S-02
-      </FloatChip>
+function intro(ms: number): CSSProperties {
+  return { ["--intro-delay" as string]: `${ms}ms` };
+}
 
-      <div className="rounded-[2.6rem] border-[7px] border-white/90 bg-canvas p-3 text-ink shadow-2xl">
-        <div className="mx-auto mb-3 h-5 w-24 rounded-full bg-ink" />
-        <div className="rounded-2xl bg-ink p-4 text-white">
-          <div className="text-[11px] text-white/60">รายรับเดือนนี้</div>
-          <div className="text-2xl font-bold">฿10,300</div>
-          <div className="mt-3 grid grid-cols-2 gap-1.5">
-            <div className="rounded-xl bg-brand px-2.5 py-1.5 text-ink">
-              <div className="text-[10px] text-ink/70">ค่าเช่า</div>
-              <div className="text-sm font-bold">฿5,700</div>
-            </div>
-            <div className="rounded-xl bg-white/10 px-2.5 py-1.5">
-              <div className="text-[10px] text-white/60">เงินประกัน</div>
-              <div className="text-sm font-bold">฿4,600</div>
-            </div>
-          </div>
-          <div className="mt-3 flex h-12 items-end gap-1.5">
-            {[30, 45, 38, 60, 72, 100].map((h, i) => (
-              <span key={i} className={clsx("flex-1 rounded-t", i === 5 ? "bg-brand" : "bg-white/20")} style={{ height: `${h}%` }} />
-            ))}
-          </div>
-        </div>
-        <div className="mt-3 grid grid-cols-4 gap-1.5">
-          {[
-            ["A1", "ok"],
-            ["A2", "ink"],
-            ["A3", "ink"],
-            ["A4", "ok"],
-            ["B1", "ink"],
-            ["B2", "warn"],
-            ["B3", "ok"],
-            ["B4", "ink"],
-          ].map(([c, t]) => (
-            <span
-              key={c}
-              className={clsx(
-                "grid h-10 place-items-center rounded-lg border-2 text-[11px] font-bold",
-                t === "ok" && "border-ok bg-ok-soft text-ok",
-                t === "ink" && "border-ink bg-ink text-white",
-                t === "warn" && "border-brand-strong bg-brand text-ink",
-              )}
-            >
-              {c}
-            </span>
-          ))}
-        </div>
-        <div className="mt-3 flex items-center gap-2 rounded-xl bg-white p-2.5">
-          <span className="grid size-8 place-items-center rounded-lg bg-bad-soft text-bad">
-            <BellRing className="size-4" />
-          </span>
-          <div className="min-w-0 flex-1 text-[11px] leading-tight">
-            <div className="font-semibold">ค้างชำระ 2 รายการ</div>
-            <div className="text-muted">แตะเพื่อดูและส่งบิล</div>
-          </div>
-        </div>
+type Tag = { title: string; line: string; tone: "paper" | "ink" | "free" };
+
+const ROW_A: Tag[] = [
+  { title: "ห้อง S-02", line: "ว่าง · ฿1,600/เดือน", tone: "free" },
+  { title: "แผง A12", line: "เสาร์–อาทิตย์ ฿250/วัน", tone: "paper" },
+  { title: "Yaris กข 1234", line: "คืนวันนี้ 18:00", tone: "ink" },
+  { title: "ที่จอด P-03", line: "รายเดือน ฿990", tone: "paper" },
+  { title: "ชุดราตรีแดง M", line: "จองแล้ว 14–16 ธ.ค.", tone: "ink" },
+  { title: "เต็นท์ 3×3 ม.", line: "ว่าง 12 จาก 20 หลัง", tone: "free" },
+];
+const ROW_B: Tag[] = [
+  { title: "กล้อง A7 IV", line: "฿900/วัน + ประกัน ฿5,000", tone: "paper" },
+  { title: "ห้องเช่า 4B", line: "ค้างจ่าย 5 วัน", tone: "ink" },
+  { title: "โกดัง 2", line: "ว่าง · 40 ตร.ม.", tone: "free" },
+  { title: "จักรยาน #07", line: "รายชั่วโมง ฿40", tone: "paper" },
+  { title: "โต๊ะจัดเลี้ยง", line: "ว่าง 64 จาก 100 ตัว", tone: "free" },
+  { title: "ห้องประชุม B", line: "จอง 13:00–15:00", tone: "ink" },
+];
+
+/** ป้ายเช่าแบบป้ายผูกจริง ไหลผ่านจอ: บอกว่า Kepz ใช้กับของเช่าได้ทุกแบบ */
+function TagRiver() {
+  return (
+    <section aria-label="ตัวอย่างสิ่งที่จัดการได้บน Kepz" className="-mt-12 overflow-hidden pb-4">
+      <TagRow tags={ROW_A} />
+      <TagRow tags={ROW_B} reverse />
+    </section>
+  );
+}
+
+function TagRow({ tags, reverse }: { tags: Tag[]; reverse?: boolean }) {
+  return (
+    <div className="tag-row py-3" data-reverse={reverse ? "" : undefined}>
+      <div className="tag-track">
+        {[...tags, ...tags].map((t, i) => (
+          <RentTag key={i} tag={t} tilt={((i * 37) % 7) - 3} hidden={i >= tags.length} />
+        ))}
       </div>
     </div>
   );
 }
 
-function FloatChip({
-  className,
-  icon,
-  tone,
-  children,
-}: {
-  className?: string;
-  icon: ReactNode;
-  tone?: "ok";
-  children: ReactNode;
-}) {
+function RentTag({ tag, tilt, hidden }: { tag: Tag; tilt: number; hidden: boolean }) {
   return (
     <div
+      aria-hidden={hidden || undefined}
       className={clsx(
-        "absolute z-10 flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-semibold whitespace-nowrap text-ink shadow-lg",
-        className,
+        "relative flex shrink-0 items-center gap-4 rounded-[14px] py-4 pr-6 pl-9 shadow-[0_10px_24px_-14px_rgb(22_21_19/0.45)]",
+        tag.tone === "paper" && "bg-white text-ink",
+        tag.tone === "ink" && "bg-ink text-white",
+        tag.tone === "free" && "bg-[#e3f4ea] text-[#145c33]",
       )}
+      style={{ rotate: `${tilt * 0.6}deg` }}
     >
-      <span className={clsx("grid size-5 place-items-center rounded-full", tone === "ok" ? "bg-ok text-white" : "bg-brand text-ink")}>
-        {icon}
-      </span>
-      {children}
+      {/* รูร้อยเชือกของป้าย */}
+      <span
+        aria-hidden
+        className={clsx(
+          "absolute top-1/2 left-3.5 size-2.5 -translate-y-1/2 rounded-full ring-2",
+          tag.tone === "ink" ? "bg-ink ring-white/40" : "bg-[#f7f5ef] ring-ink/15",
+        )}
+      />
+      <div className="whitespace-nowrap">
+        <div className="text-base leading-tight font-bold">{tag.title}</div>
+        <div className={clsx("text-sm", tag.tone === "ink" ? "text-white/65" : "opacity-70")}>{tag.line}</div>
+      </div>
     </div>
   );
 }
 
-const RENTABLES: { label: string; icon: typeof Warehouse; cls: string }[] = [
-  { label: "ห้องเก็บของ", icon: Warehouse, cls: "bg-brand text-ink" },
-  { label: "ที่จอดรถ", icon: ParkingSquare, cls: "bg-ink text-brand" },
-  { label: "แผงตลาด", icon: Store, cls: "bg-white text-ink" },
-  { label: "รถเช่า", icon: Car, cls: "bg-[#ffe98a] text-ink" },
-  { label: "ชุด / เสื้อผ้า", icon: Shirt, cls: "bg-white text-ink" },
-  { label: "กล้อง / อุปกรณ์", icon: Camera, cls: "bg-ink text-white" },
-  { label: "เต็นท์ / ของจัดงาน", icon: Tent, cls: "bg-brand text-ink" },
-  { label: "จักรยาน / กีฬา", icon: Bike, cls: "bg-[#ffe98a] text-ink" },
-];
-
-function RentAnything() {
+function Closing() {
   return (
-    <section id="rent" className="mx-auto max-w-6xl scroll-mt-20 px-5 py-16 sm:py-20">
-      <SectionTitle kicker="ให้เช่าอะไรได้บ้าง" title="ไม่ว่าจะเช่าอะไร ก็ใช้ระบบเดียว" />
-      <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
-        {RENTABLES.map(({ label, icon: Icon, cls }) => (
-          <div
-            key={label}
-            className={clsx(
-              "flex aspect-[4/3] flex-col justify-between rounded-3xl p-4 ring-1 ring-ink/5 transition hover:-translate-y-1 sm:p-5",
-              cls,
-            )}
-          >
-            <Icon className="size-8 sm:size-10" strokeWidth={1.6} />
-            <span className="text-sm font-semibold sm:text-base">{label}</span>
-          </div>
-        ))}
-      </div>
-      <p className="mt-5 text-center text-sm text-muted">และธุรกิจให้เช่าแบบอื่น ๆ ตั้งค่าเองได้</p>
-    </section>
-  );
-}
-
-const STEPS = [
-  { title: "เพิ่มสิ่งที่ให้เช่า", desc: "วาดผังพื้นที่ หรือเพิ่มของทีละชิ้น ตั้งราคาครั้งเดียว", icon: LayoutGrid },
-  { title: "ทำสัญญา / จอง", desc: "เลือกของที่ว่าง ใส่ผู้เช่า ระบบออกบิลแรกให้ทันที", icon: FileText },
-  { title: "ออกบิล รับเงิน", desc: "แจ้งเตือนถึงรอบบิลและค้างชำระ ออกใบเสร็จอัตโนมัติ", icon: ReceiptText },
-];
-
-function HowItWorks() {
-  return (
-    <section id="how" className="scroll-mt-20 bg-white py-16 sm:py-20">
-      <div className="mx-auto max-w-6xl px-5">
-        <SectionTitle kicker="วิธีใช้งาน" title="เริ่มได้ใน 3 ขั้นตอน" />
-        <ol className="mt-10 grid gap-4 md:grid-cols-3">
-          {STEPS.map(({ title, desc, icon: Icon }, i) => (
-            <li key={title} className="relative rounded-3xl bg-canvas p-6">
-              <span className="absolute top-5 right-6 text-5xl font-bold text-ink/10">{i + 1}</span>
-              <span className="grid size-12 place-items-center rounded-2xl bg-ink text-brand">
-                <Icon className="size-6" />
-              </span>
-              <h3 className="mt-5 text-lg font-bold">{title}</h3>
-              <p className="mt-1 text-sm leading-relaxed text-muted">
-                <Phrases text={desc} />
-              </p>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </section>
-  );
-}
-
-const FEATURES = [
-  { title: "ผังสถานที่", desc: "เห็นว่าห้องไหนว่าง มีผู้เช่า หรือค้างจ่าย ในภาพเดียว", icon: LayoutGrid },
-  { title: "บิลและใบเสร็จ PDF", desc: "พิมพ์หรือส่งลูกค้าได้ทันที รองรับ VAT และหัก ณ ที่จ่าย", icon: ReceiptText },
-  { title: "แยกเงินประกัน", desc: "รู้รายได้จริง ไม่ปนกับเงินประกันที่ต้องคืน", icon: PiggyBank },
-  { title: "แจ้งเตือนงานค้าง", desc: "ถึงรอบบิล ค้างชำระ สัญญาใกล้หมด รวมไว้หน้าแรก", icon: BellRing },
-  { title: "ใช้บนมือถือ", desc: "ติดตั้งเป็นแอปได้ จัดการหน้างานได้ทุกที่", icon: Smartphone },
-  { title: "ทำงานเป็นทีม", desc: "แบ่งสิทธิ์เจ้าของ/พนักงาน มีประวัติว่าใครแก้อะไร", icon: Users },
-];
-
-function Features() {
-  return (
-    <section id="features" className="mx-auto max-w-6xl scroll-mt-20 px-5 py-16 sm:py-20">
-      <SectionTitle kicker="ฟีเจอร์" title="ทุกอย่างที่ธุรกิจเช่าต้องใช้" />
-      <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {FEATURES.map(({ title, desc, icon: Icon }) => (
-          <div key={title} className="flex gap-4 rounded-3xl bg-white p-5 ring-1 ring-line">
-            <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand text-ink">
-              <Icon className="size-5" />
-            </span>
-            <div>
-              <h3 className="font-bold">{title}</h3>
-              <p className="mt-0.5 text-sm leading-relaxed text-muted">
-                <Phrases text={desc} />
-              </p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function FinalCta() {
-  return (
-    <section className="px-5 pb-6">
-      <div className="mx-auto max-w-6xl rounded-[2rem] bg-ink px-6 py-14 text-center text-white sm:py-16">
-        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-          พร้อมจัดการธุรกิจเช่า
-          <br className="sm:hidden" /> ให้ง่ายขึ้นหรือยัง<span className="text-brand">?</span>
+    <section className="px-3 pt-16 pb-6 sm:px-6">
+      <div className="grow-on-scroll mx-auto max-w-6xl rounded-[2rem] bg-ink px-6 py-20 text-center text-white sm:py-28">
+        <h2 className="mx-auto max-w-3xl text-4xl leading-[1.15] font-bold tracking-tight sm:text-6xl">
+          <Phrases text="เริ่มจากของที่คุณ ให้เช่าอยู่วันนี้" />
         </h2>
-        <p className="mx-auto mt-3 max-w-md text-white/60">
-          <Phrases text="เริ่มจากสิ่งที่คุณให้เช่าอยู่วันนี้ แล้วเพิ่มอย่างอื่นเมื่อพร้อม" />
+        <p className="mx-auto mt-5 max-w-md text-lg text-white/60">
+          <Phrases text="ห้องเดียวหรือร้อยห้อง แผงเดียวหรือทั้งตลาด เพิ่มอย่างอื่นได้เมื่อพร้อม" />
         </p>
-        {/* ปุ่มเรืองแสง: ขอบแสงเหลืองวิ่งรอบ ชวนกดตอนเลื่อนมาถึงท้ายหน้า */}
-        <ShinyButton href="/login" className="mt-9 w-full max-w-xs sm:w-auto">
+        <ShinyButton href="/login" className="mt-10 w-full max-w-xs sm:w-auto">
           เริ่มใช้งาน Kepz
         </ShinyButton>
       </div>
@@ -340,29 +175,18 @@ function FinalCta() {
   );
 }
 
-function SectionTitle({ kicker, title }: { kicker: string; title: string }) {
-  return (
-    <div className="text-center">
-      <span className="text-sm font-semibold text-brand-strong">{kicker}</span>
-      <h2 className="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">
-        <Phrases text={title} />
-      </h2>
-      <span aria-hidden className="mx-auto mt-3 block h-1 w-10 rounded-full bg-brand" />
-    </div>
-  );
-}
-
 /**
- * ภาษาไทยไม่เว้นวรรคระหว่างคำ เบราว์เซอร์จึงตัดบรรทัดกลางวลีได้ (เช่น "ที่ / เดียว")
+ * ภาษาไทยไม่เว้นวรรคระหว่างคำ เบราว์เซอร์จึงตัดบรรทัดกลางวลีได้
  * แยกตามช่องว่างแล้วให้แต่ละวลีอยู่บรรทัดเดียวกันเสมอ
  */
 function Phrases({ text }: { text: string }) {
+  const words = text.split(" ");
   return (
     <>
-      {text.split(" ").map((w, i) => (
+      {words.map((w, i) => (
         <span key={i} className="inline-block whitespace-nowrap">
           {w}
-          {i < text.split(" ").length - 1 && " "}
+          {i < words.length - 1 && " "}
         </span>
       ))}
     </>
