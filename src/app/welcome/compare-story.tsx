@@ -3,6 +3,7 @@
 import clsx from "clsx";
 import { Check, ChevronsLeftRight, X } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { Reveal } from "@/components/motion/reveal";
 import { Phone, type Screen } from "./app-screens";
 
 type Chapter = {
@@ -52,16 +53,17 @@ const CHAPTERS: Chapter[] = [
 /** จากสมุดจดสู่ Kepz: แต่ละเรื่องเป็นการ์ดเปรียบเทียบ ลากเส้นตรงกลางดูแบบเดิมกับแบบใหม่ */
 export function CompareStory() {
   return (
-    <section id="story" className="scroll-mt-16 bg-white">
+    <section id="story" className="scroll-mt-16 bg-brand-soft">
       <div className="mx-auto max-w-6xl px-5 pt-24 pb-10 sm:pt-32">
-        <div className="max-w-2xl">
+        <Reveal className="max-w-2xl">
           <h2 className="text-4xl leading-[1.15] font-bold tracking-tight sm:text-6xl">
             Kepz ช่วยงาน<span className="inline-block">อะไรบ้าง</span>
           </h2>
           <p className="mt-4 max-w-lg text-lg leading-relaxed text-ink/65">
-            4 งานที่เจ้าของกิจการให้เช่าทำทุกเดือน เทียบแบบเดิมที่จดสมุด กับเมื่อใช้ Kepz ลากเส้นตรงกลางการ์ดเพื่อดูความต่าง
+            4 งานที่เจ้าของกิจการให้เช่าทำทุกเดือน เทียบแบบเดิมที่จดสมุด กับเมื่อใช้ Kepz
+            ลากเส้นตรงกลางการ์ดเพื่อดูความต่าง
           </p>
-        </div>
+        </Reveal>
 
         <div className="mt-14 space-y-20 sm:mt-20 sm:space-y-28">
           {CHAPTERS.map((c, i) => (
@@ -69,15 +71,24 @@ export function CompareStory() {
               key={c.screen}
               className="grid items-center gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-16"
             >
-              <div className={clsx(i % 2 === 1 && "lg:order-2")}>
-                <h3 className="text-3xl leading-tight font-bold tracking-tight sm:text-4xl">{c.title}</h3>
-                <p className="mt-4 max-w-md text-[17px] leading-relaxed text-ink/70">{c.body}</p>
+              <Reveal
+                variant={i % 2 === 1 ? "right" : "left"}
+                className={clsx(i % 2 === 1 && "lg:order-2")}
+              >
+                <h3 className="text-3xl leading-tight font-bold tracking-tight sm:text-4xl">
+                  {c.title}
+                </h3>
+                <p className="mt-4 max-w-md text-[17px] leading-relaxed text-ink/70">
+                  {c.body}
+                </p>
                 <ul className="mt-6 max-w-md space-y-2.5">
                   <li className="flex items-start gap-3 text-ink/50">
                     <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-canvas">
                       <X className="size-3.5" strokeWidth={3} />
                     </span>
-                    <span className="line-through decoration-ink/30">{c.before}</span>
+                    <span className="line-through decoration-ink/30">
+                      {c.before}
+                    </span>
                   </li>
                   <li className="flex items-start gap-3 font-semibold">
                     <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-brand">
@@ -86,8 +97,10 @@ export function CompareStory() {
                     {c.after}
                   </li>
                 </ul>
-              </div>
-              <CompareCard chapter={c} hint={i === 0} />
+              </Reveal>
+              <Reveal variant="pop" delay={150}>
+                <CompareCard chapter={c} hint={i === 0} />
+              </Reveal>
             </article>
           ))}
         </div>
@@ -113,7 +126,8 @@ function CompareCard({ chapter, hint }: { chapter: Chapter; hint: boolean }) {
         if (!e.isIntersecting) return;
         setInView(true);
         io.disconnect();
-        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+          return;
         const keys = [50, 78, 24, 55];
         const seg = 700;
         const start = performance.now() + 400;
@@ -177,7 +191,10 @@ function CompareCard({ chapter, hint }: { chapter: Chapter; hint: boolean }) {
         </div>
 
         {/* เส้นแบ่ง + ปุ่มลาก */}
-        <div className="pointer-events-none absolute inset-y-0" style={{ left: `${pos}%` }}>
+        <div
+          className="pointer-events-none absolute inset-y-0"
+          style={{ left: `${pos}%` }}
+        >
           <div className="absolute inset-y-0 -left-px w-0.5 bg-ink" />
           <input
             type="range"
@@ -197,7 +214,10 @@ function CompareCard({ chapter, hint }: { chapter: Chapter; hint: boolean }) {
         </div>
       </div>
       {hint && (
-        <p className="hand pointer-events-none absolute right-6 -bottom-10 rotate-[-3deg] text-xl text-[#2d4bc9]" aria-hidden>
+        <p
+          className="hand pointer-events-none absolute right-6 -bottom-10 rotate-[-3deg] text-xl text-[#2d4bc9]"
+          aria-hidden
+        >
           ลองลากเส้นตรงกลางดู
         </p>
       )}
@@ -205,9 +225,20 @@ function CompareCard({ chapter, hint }: { chapter: Chapter; hint: boolean }) {
   );
 }
 
-function Label({ children, className }: { children: ReactNode; className?: string }) {
+function Label({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
   return (
-    <span className={clsx("absolute top-4 rounded-full border-2 border-ink px-3 py-1 text-sm font-bold", className)}>
+    <span
+      className={clsx(
+        "absolute top-4 rounded-full border-2 border-ink px-3 py-1 text-sm font-bold",
+        className,
+      )}
+    >
       {children}
     </span>
   );
@@ -221,7 +252,9 @@ function Notebook({ screen }: { screen: Screen }) {
     <div className="relative">
       <div className="hand relative h-[380px] w-[250px] -rotate-2 overflow-hidden rounded-sm bg-[#fffdf6] pt-7 pr-4 pl-12 text-[18px] leading-[30px] whitespace-nowrap text-[#2d4bc9] shadow-[0_18px_40px_-18px_rgb(0_0_0/0.45)] [background-image:repeating-linear-gradient(transparent_0_29px,#c9d6ef_29px_30px)] [background-position:0_26px] sm:h-[420px] sm:w-[280px]">
         <span className="absolute inset-y-0 left-9 w-px bg-[#f2a7a7]" />
-        <p className="text-[22px] underline decoration-2 underline-offset-4">{page.title}</p>
+        <p className="text-[22px] underline decoration-2 underline-offset-4">
+          {page.title}
+        </p>
         <div className="mt-1">{page.lines}</div>
       </div>
       <p className="hand absolute -right-6 bottom-6 w-36 rotate-[5deg] bg-[#fff27a] px-3 py-2.5 text-[17px] leading-snug text-ink shadow-md sm:-right-10">
@@ -237,9 +270,14 @@ const Strike = ({ children }: { children: ReactNode }) => (
     <span className="absolute top-1/2 -right-1 -left-1 h-0.5 -rotate-3 bg-[#d6283b]" />
   </span>
 );
-const Red = ({ children }: { children: ReactNode }) => <span className="text-[#d6283b]">{children}</span>;
+const Red = ({ children }: { children: ReactNode }) => (
+  <span className="text-[#d6283b]">{children}</span>
+);
 
-const NOTES: Record<Screen, { title: string; lines: ReactNode; sticky: string }> = {
+const NOTES: Record<
+  Screen,
+  { title: string; lines: ReactNode; sticky: string }
+> = {
   bills: {
     title: "ค่าเช่า ธ.ค.",
     lines: (
@@ -285,7 +323,10 @@ const NOTES: Record<Screen, { title: string; lines: ReactNode; sticky: string }>
       <>
         <div className="mt-2 grid w-[150px] grid-cols-4 gap-1.5">
           {"xx?ox?xxoxxx".split("").map((c, i) => (
-            <span key={i} className="grid aspect-square place-items-center rounded-[3px] border-2 border-[#2d4bc9] text-[15px] leading-none">
+            <span
+              key={i}
+              className="grid aspect-square place-items-center rounded-[3px] border-2 border-[#2d4bc9] text-[15px] leading-none"
+            >
               {c === "x" ? "✕" : c === "o" ? "" : <Red>?</Red>}
             </span>
           ))}

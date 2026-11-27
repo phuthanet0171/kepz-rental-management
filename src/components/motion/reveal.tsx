@@ -5,7 +5,7 @@ import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
 
 /**
  * โผล่เมื่อเลื่อนมาถึง: ค่อยๆ ปรากฏ + เลื่อนขึ้นเล็กน้อย ครั้งเดียว
- * variant: up (เลื่อนขึ้น) · pop (ขยายจากเล็ก + เอียงนิด) · fade (จางเข้า)
+ * variant: up (เลื่อนขึ้น) · pop (ขยายจากเล็ก + เอียงนิด) · fade (จางเข้า) · left/right (เลื่อนเข้าจากข้าง) · drop (ตกลงมาแล้วแกว่ง)
  * delay (ms) ใช้ไล่จังหวะทีละชิ้น · ไม่มี JS หรือผู้ใช้ตั้งลดการเคลื่อนไหว = แสดงทันที (ดู globals.css)
  */
 export function Reveal({
@@ -18,7 +18,7 @@ export function Reveal({
 }: {
   children: ReactNode;
   as?: "div" | "li" | "section" | "span";
-  variant?: "up" | "pop" | "fade";
+  variant?: "up" | "pop" | "fade" | "left" | "right" | "drop";
   delay?: number;
   className?: string;
   style?: CSSProperties;
