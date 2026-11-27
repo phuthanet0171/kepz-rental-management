@@ -2,7 +2,8 @@
 
 import clsx from "clsx";
 import { useEffect, useRef } from "react";
-import { type ArtKey, RentalArt } from "./rental-art";
+import Image from "next/image";
+import type { ArtKey } from "./rental-art";
 
 type Tag = { title: string; line: string; tone: "paper" | "ink" | "free"; art: ArtKey };
 
@@ -139,7 +140,16 @@ function RentTag({ tag, tilt, hidden }: { tag: Tag; tilt: number; hidden: boolea
             tag.tone === "ink" ? "bg-ink ring-white/40" : "bg-white ring-ink/15",
           )}
         />
-        <RentalArt art={tag.art} className="size-14 shrink-0 sm:size-16" />
+        <Image
+          src={`/rentals/${tag.art}.webp`}
+          alt=""
+          width={64}
+          height={64}
+          draggable={false}
+          loading="eager"
+          unoptimized
+          className="size-14 shrink-0 rounded-xl object-cover ring-1 ring-black/10 sm:size-16"
+        />
         <div className="whitespace-nowrap">
           <div className="text-base leading-tight font-bold sm:text-lg">{tag.title}</div>
           <div className={clsx("text-sm", tag.tone === "ink" ? "text-white/65" : "opacity-70")}>{tag.line}</div>
