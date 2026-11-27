@@ -8,7 +8,7 @@ import type { ArtKey } from "./rental-art";
 type Tag = { title: string; line: string; tone: "free" | "busy" | "late" | "info"; art: ArtKey };
 
 const ROW_A: Tag[] = [
-  { title: "ห้อง S-02", line: "ว่าง · ฿1,600/เดือน", tone: "free", art: "storage" },
+  { title: "ห้องเก็บของไซส์ M", line: "ว่าง · ฿1,600/เดือน", tone: "free", art: "storage" },
   { title: "แผง A12", line: "เสาร์–อาทิตย์ ฿250/วัน", tone: "info", art: "stall" },
   { title: "Yaris กข 1234", line: "คืนวันนี้ 18:00", tone: "busy", art: "car" },
   { title: "ที่จอด P-03", line: "รายเดือน ฿990", tone: "info", art: "parking" },
