@@ -829,13 +829,14 @@ dialog::backdrop {
     background-position: 0 0;
   }
 }
+/* ลูกศรขยับขึ้นลง ชี้ลงที่ปุ่ม */
 @keyframes point-nudge {
   0%,
   100% {
     transform: translate(0, 0);
   }
   50% {
-    transform: translate(4px, 5px);
+    transform: translate(0, 5px);
   }
 }
 @keyframes caret {

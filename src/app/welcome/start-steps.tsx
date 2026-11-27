@@ -109,19 +109,22 @@ function Node({ children, done }: { children: ReactNode; done?: boolean }) {
 function StartCta() {
   return (
     <div>
-      <p className="hand flex items-end gap-1 text-[22px] leading-none">
-        {/* ตัวอักษรไล่สีเป็นประกายวิ่งผ่าน */}
-        <span className="shimmer-text">ขั้นที่ 1 เริ่มตรงนี้</span>
-        <svg aria-hidden viewBox="0 0 40 34" className="point-nudge mb-[-14px] h-8 w-10 overflow-visible">
-          <path d="M3 4 C 22 4, 32 12, 30 30" fill="none" stroke="#1b1a17" strokeWidth="2.5" strokeLinecap="round" />
-          <path d="M23 24 L30 31 L36 23" fill="none" stroke="#1b1a17" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      {/* ข้อความ + ลูกศร อยู่กึ่งกลางเหนือปุ่ม ปลายลูกศรชี้ตรงกลางปุ่มพอดี */}
+      <div className="inline-flex w-full max-w-xs flex-col items-center sm:w-auto sm:max-w-none">
+        <p className="hand text-lg leading-none">
+          {/* ตัวอักษรไล่สีเป็นประกายวิ่งผ่าน */}
+          <span className="shimmer-text">ขั้นที่ 1 เริ่มตรงนี้</span>
+        </p>
+        <svg aria-hidden viewBox="0 0 24 30" className="point-nudge mt-1 h-7 w-6 overflow-visible">
+          <path d="M16 2 C 6 8, 6 18, 12 27" fill="none" stroke="#1b1a17" strokeWidth="2.5" strokeLinecap="round" />
+          <path d="M6.5 21.5 L12 27.5 L16.5 21" fill="none" stroke="#1b1a17" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
-      </p>
-      <span className="rainbow-glow mt-5 inline-block w-full max-w-xs sm:w-auto">
-        <ShinyButton href="/signup" className="shiny-hero w-full">
-          เริ่มใช้งาน Kepz
-        </ShinyButton>
-      </span>
+        <span className="rainbow-glow mt-2 inline-block w-full sm:w-auto">
+          <ShinyButton href="/signup" className="shiny-hero w-full">
+            เริ่มใช้งาน Kepz
+          </ShinyButton>
+        </span>
+      </div>
       <p className="mt-6 flex max-w-sm items-start gap-2 text-[15px] leading-relaxed font-medium text-ink/75">
         <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-ink text-brand">
           <Check className="size-3" strokeWidth={3.5} />

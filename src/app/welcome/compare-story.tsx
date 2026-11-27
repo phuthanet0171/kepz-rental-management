@@ -4,14 +4,15 @@ import clsx from "clsx";
 import { ChevronsLeftRight } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Reveal } from "@/components/motion/reveal";
-import { Phone, type Screen } from "./app-screens";
+import type { Screen } from "./app-screens";
+import { BillScreen, DashboardScreen, PlanScreen, ReceiptScreen } from "./real-screens";
 
-/** แต่ละเรื่อง: ปัญหาแบบเดิม → สิ่งที่ Kepz ทำได้ (ข้อความสั้นที่สุด ให้ภาพเทียบเล่าเรื่องแทน) */
-const TOPICS: { screen: Screen; time: string; tab: string; before: string; after: string }[] = [
-  { screen: "bills", time: "08:00", tab: "ทวงค่าเช่า", before: "ไล่ทักทวงทีละคน", after: "รู้ทันทีว่าใครยังไม่จ่าย" },
-  { screen: "paid", time: "13:20", tab: "ใบเสร็จ", before: "หาสลิปในแชท เขียนใบเสร็จเอง", after: "กดรับเงิน ได้ใบเสร็จ PDF" },
-  { screen: "map", time: "17:45", tab: "ช่องว่าง", before: "เปิดสมุดไล่ดูว่าอะไรว่าง", after: "ดูผังสีเดียวรู้" },
-  { screen: "night", time: "21:00", tab: "ยอดสิ้นเดือน", before: "กดเครื่องคิดเลขรวมเอง", after: "เห็นยอดทุกสาขาทันที" },
+/** แต่ละเรื่อง: แบบเดิม (สมุดจด) → หน้าจอจริงของ Kepz (ข้อความสั้นที่สุด ให้ภาพเทียบเล่าเรื่องแทน) */
+const TOPICS: { screen: Screen; tab: string; before: string; after: string; view: ReactNode }[] = [
+  { screen: "bills", tab: "ออกบิลทุกเดือน", before: "เขียนบิลเองทีละห้อง", after: "ได้ใบวางบิลครบ แค่ส่งให้ผู้เช่า", view: <BillScreen /> },
+  { screen: "paid", tab: "ใบเสร็จ", before: "หาสลิป เขียนใบเสร็จเอง", after: "กดรับเงิน ได้ใบเสร็จทันที", view: <ReceiptScreen /> },
+  { screen: "map", tab: "ห้องว่าง", before: "เปิดสมุดไล่ดูว่าห้องไหนว่าง", after: "ผังห้องบอกสถานะทุกห้อง", view: <PlanScreen /> },
+  { screen: "night", tab: "สรุปรายได้", before: "กดเครื่องคิดเลขรวมเอง", after: "แดชบอร์ดสรุปยอดทุกเดือน", view: <DashboardScreen /> },
 ];
 
 /**
@@ -26,15 +27,15 @@ export function CompareStory() {
       id="story"
       className="scroll-mt-16 overflow-x-clip bg-canvas [background-image:radial-gradient(rgb(27_26_23/0.08)_1.5px,transparent_1.5px)] [background-size:26px_26px]"
     >
-      <div className="mx-auto max-w-3xl px-5 pt-24 pb-24 sm:pt-28 sm:pb-28">
+      <div className="mx-auto max-w-3xl px-5 pt-20 pb-20 sm:pt-24 sm:pb-24">
         <Reveal className="text-center">
-          <h2 className="text-3xl leading-[1.2] font-bold tracking-tight sm:text-5xl">
+          <h2 className="text-3xl leading-[1.2] font-bold tracking-tight sm:text-4xl">
             แบบเดิม <span className="text-ink/35">vs</span> Kepz
           </h2>
           <p className="mt-3 text-base text-ink/60 sm:text-lg">ลากเส้นตรงกลางเพื่อเทียบ</p>
         </Reveal>
 
-        <Reveal delay={120} className="mt-8">
+        <Reveal delay={120} className="mt-6">
           <div role="tablist" aria-label="เลือกเรื่องที่จะเทียบ" className="mx-auto grid max-w-sm grid-cols-2 gap-2 sm:flex sm:max-w-none sm:justify-center">
             {TOPICS.map((x, i) => (
               <button
@@ -55,12 +56,12 @@ export function CompareStory() {
           </div>
         </Reveal>
 
-        <Reveal variant="pop" delay={200} className="mt-6">
+        <Reveal variant="pop" delay={200} className="mt-5">
           <div id="compare-panel" role="tabpanel" aria-label={t.tab}>
             {/* key: เปลี่ยนเรื่องแล้วเส้นแบ่งกวาดให้ดูใหม่ */}
-            <CompareCard key={t.screen} screen={t.screen} time={t.time} />
+            <CompareCard key={t.screen} screen={t.screen} after={t.view} />
           </div>
-          <div className="mt-5 grid grid-cols-2 gap-3 text-center text-[15px] sm:text-base">
+          <div className="mt-4 grid grid-cols-2 gap-3 text-center text-[15px] sm:text-base">
             <p className="text-ink/50">
               <span className="block text-xs font-semibold text-ink/40">แบบเดิม</span>
               <span className="line-through decoration-ink/30">{t.before}</span>
@@ -76,9 +77,8 @@ export function CompareStory() {
   );
 }
 
-function CompareCard({ screen, time }: { screen: Screen; time: string }) {
+function CompareCard({ screen, after }: { screen: Screen; after: ReactNode }) {
   const [pos, setPos] = useState(50);
-  const [inView, setInView] = useState(false);
   const boxRef = useRef<HTMLDivElement>(null);
   const touched = useRef(false);
   const dragging = useRef(false);
@@ -91,7 +91,6 @@ function CompareCard({ screen, time }: { screen: Screen; time: string }) {
     const io = new IntersectionObserver(
       ([e]) => {
         if (!e.isIntersecting) return;
-        setInView(true);
         io.disconnect();
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches)
           return;
@@ -128,7 +127,7 @@ function CompareCard({ screen, time }: { screen: Screen; time: string }) {
     <div className="relative">
       <div
         ref={boxRef}
-        className="relative h-[440px] cursor-ew-resize touch-pan-y overflow-hidden rounded-3xl shadow-[0_30px_60px_-28px_rgb(0_0_0/0.45)] ring-1 ring-ink/10 select-none sm:h-[500px]"
+        className="relative h-[clamp(340px,calc(100svh_-_21rem),540px)] cursor-ew-resize touch-pan-y overflow-hidden rounded-3xl shadow-[0_30px_60px_-28px_rgb(0_0_0/0.45)] ring-1 ring-ink/10 select-none"
         onPointerDown={(e) => {
           touched.current = true;
           dragging.current = true;
@@ -140,10 +139,8 @@ function CompareCard({ screen, time }: { screen: Screen; time: string }) {
         onPointerCancel={() => (dragging.current = false)}
       >
         {/* หลัง: ใช้ Kepz */}
-        <div className="absolute inset-0 grid place-items-center bg-brand">
-          <div className="origin-center scale-[0.7] sm:scale-[0.78]">
-            <Phone screen={screen} time={time} on={inView} />
-          </div>
+        <div className="absolute inset-0 bg-canvas">
+          {after}
           <Label className="right-4 bg-ink text-brand">Kepz</Label>
         </div>
 
