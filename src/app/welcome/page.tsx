@@ -21,6 +21,7 @@ import {
 import type { Metadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { ShinyButton } from "@/components/ui/shiny-button";
 
 export const metadata: Metadata = {
   title: { absolute: "Kepz — มีอะไรให้เช่า ก็จัดการได้บน Kepz" },
@@ -330,12 +331,10 @@ function FinalCta() {
         <p className="mx-auto mt-3 max-w-md text-white/60">
           <Phrases text="เริ่มจากสิ่งที่คุณให้เช่าอยู่วันนี้ แล้วเพิ่มอย่างอื่นเมื่อพร้อม" />
         </p>
-        <Link
-          href="/login"
-          className="mt-8 inline-flex h-13 w-full max-w-xs items-center justify-center gap-2 rounded-full bg-brand px-8 text-base font-semibold text-ink transition hover:bg-brand-strong active:scale-[0.98] sm:w-auto"
-        >
-          เริ่มใช้งาน <ArrowRight className="size-4" />
-        </Link>
+        {/* ปุ่มเรืองแสง: ขอบแสงเหลืองวิ่งรอบ ชวนกดตอนเลื่อนมาถึงท้ายหน้า */}
+        <ShinyButton href="/login" className="mt-9 w-full max-w-xs sm:w-auto">
+          เริ่มใช้งาน Kepz
+        </ShinyButton>
       </div>
     </section>
   );
