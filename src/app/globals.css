@@ -836,3 +836,34 @@ dialog::backdrop {
     transform: rotate(0);
   }
 }
+
+/* ===== ป้ายห้อยเชือกที่แกว่งเบาๆ ตลอด (หน้าสมัคร/เข้าสู่ระบบ) ===== */
+@media (prefers-reduced-motion: no-preference) {
+  .tag-idle {
+    transform-origin: 50% 0;
+    animation: key-sway 6s ease-in-out infinite;
+  }
+}
+
+/* ===== เริ่มต้นใช้งาน: ช่องที่ให้เช่าโผล่ทีละช่องเมื่อจำนวนเพิ่ม ===== */
+@media (prefers-reduced-motion: no-preference) {
+  .unit-pop {
+    animation: unit-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    animation-delay: min(calc(var(--i, 0) * 18ms), 400ms);
+  }
+  .step-in {
+    animation: step-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+@keyframes unit-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+@keyframes step-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}

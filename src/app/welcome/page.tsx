@@ -4,7 +4,7 @@ import type { CSSProperties } from "react";
 import { ShinyButton } from "@/components/ui/shiny-button";
 import { ArrowDown, ArrowRight } from "lucide-react";
 import { DayStory } from "./day-story";
-import { anuphan, sriracha } from "./fonts";
+import { sriracha } from "@/lib/hand-font";
 import { StartSteps } from "./start-steps";
 import { TagRiver } from "./tag-river";
 
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default function WelcomePage() {
   return (
     <div
-      className={`${anuphan.variable} ${sriracha.variable} min-h-dvh bg-white font-[family-name:var(--font-anuphan)] text-ink`}
+      className={`${sriracha.variable} min-h-dvh bg-white text-ink`}
     >
       {/* เปิดการเคลื่อนไหวเฉพาะเมื่อ JS พร้อม ถ้าไม่มี JS เนื้อหาแสดงตามปกติ */}
       <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('motion-ready')" }} />
@@ -67,7 +67,7 @@ function Hero() {
           <Phrases text="ห้อง ที่จอด แผงตลาด รถ ชุด อุปกรณ์ ทำสัญญา ออกบิล รับเงิน และดูว่าอะไรว่าง บนมือถือเครื่องเดียว" />
         </p>
         <div className="intro mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center" style={intro(560)}>
-          <Link href="/login" className="ink-cta w-full max-w-xs sm:w-auto">
+          <Link href="/signup" className="ink-cta w-full max-w-xs sm:w-auto">
             <span>เริ่มใช้งาน Kepz</span>
             <span aria-hidden className="ink-cta-mark">
               <ArrowRight className="ink-cta-arrow" strokeWidth={2.5} />
@@ -107,7 +107,7 @@ function Closing() {
           <p className="mx-auto mt-5 max-w-lg text-lg leading-relaxed text-white/65">
             <Phrases text="มีห้องเดียวหรือร้อยห้อง แผงเดียวหรือทั้งตลาด เริ่มได้เลย แล้วค่อยเพิ่มของอย่างอื่นเมื่อพร้อม" />
           </p>
-          <ShinyButton href="/login" className="mt-10 w-full max-w-xs sm:w-auto">
+          <ShinyButton href="/signup" className="mt-10 w-full max-w-xs sm:w-auto">
             เริ่มใช้งาน Kepz
           </ShinyButton>
         </div>

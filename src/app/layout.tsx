@@ -1,8 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Sans_Thai } from "next/font/google";
+import { Anuphan } from "next/font/google";
 import "./globals.css";
 
-const thai = IBM_Plex_Sans_Thai({
+/** ตัวอักษรหลักทั้งเว็บ: ตัวไทยไม่มีหัว อ่านง่ายบนมือถือ (ชื่อตัวแปรคง --font-thai ไว้ให้ token เดิมใช้ต่อได้) */
+const thai = Anuphan({
   variable: "--font-thai",
   subsets: ["thai", "latin"],
   weight: ["400", "500", "600", "700"],
@@ -11,7 +12,7 @@ const thai = IBM_Plex_Sans_Thai({
 
 export const metadata: Metadata = {
   title: { default: "Kepz Management", template: "%s · Kepz" },
-  description: "ระบบบริหารห้องเก็บของและที่จอดรถ Kepz",
+  description: "มีอะไรให้เช่า ก็จัดการได้บน Kepz",
   applicationName: "Kepz",
   appleWebApp: { capable: true, title: "Kepz", statusBarStyle: "default" },
   formatDetection: { telephone: false },
