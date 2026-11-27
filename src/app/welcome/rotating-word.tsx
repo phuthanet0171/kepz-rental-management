@@ -1,21 +1,36 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 
 const WORDS = ["อะไร", "รถ", "เสื้อผ้า", "หอพัก", "ที่จอดรถ", "บ้าน", "ห้องเก็บของ", "คอนโด", "แผงตลาด", "เครื่องประดับ"];
 const HOLD_FIRST = 2800;
 const HOLD = 2000;
 
 /**
- * คำที่สลับในหัวข้อ: กรอบขาวขอบดำอยู่นิ่ง มีแต่คำข้างในที่หมุนขึ้น (คำเก่าออก คำใหม่เข้า)
- * บรรทัดสูงพอให้สระบน/วรรณยุกต์ไม่ถูกตัด · แถบเล็กใต้กรอบค่อยๆ เต็ม บอกว่าคำกำลังจะเปลี่ยน
+ * คำที่สลับในหัวข้อ (อยู่ท้ายบรรทัดแรก)
+ * - กรอบขาวขอบดำ ยืด/หดตามความยาวคำอย่างนุ่มนวล
+ * - คำเก่าเลื่อนขึ้นออก คำใหม่เลื่อนขึ้นมาแทน แล้วคำเก่าถูกเอาออกจากหน้า (คัดลอกข้อความจะไม่ติดคำซ้อน)
+ * - เส้นที่ขอบล่างในกรอบค่อยๆ เต็ม บอกว่าคำกำลังจะเปลี่ยน
  * โปรแกรมอ่านหน้าจอได้ยินประโยคเต็มครั้งเดียว (ดู sr-only ใน page)
  */
 export function RotatingWord() {
   const [i, setI] = useState(0);
   const [prev, setPrev] = useState<number | null>(null);
   const [still, setStill] = useState(false);
+  const [width, setWidth] = useState<number | null>(null);
+  const measure = useRef<HTMLSpanElement>(null);
   const hold = i === 0 ? HOLD_FIRST : HOLD;
+
+  // วัดความกว้างของคำปัจจุบัน แล้วให้กรอบยืด/หดไปเท่านั้น
+  useLayoutEffect(() => {
+    const el = measure.current;
+    if (!el) return;
+    const fit = () => setWidth(el.getBoundingClientRect().width);
+    fit();
+    document.fonts?.ready.then(fit);
+    window.addEventListener("resize", fit);
+    return () => window.removeEventListener("resize", fit);
+  }, [i]);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -30,32 +45,45 @@ export function RotatingWord() {
     return () => clearTimeout(t);
   }, [i, hold]);
 
+  // เอาคำเก่าออกเสมอหลังเลื่อนเสร็จ (กันกรณีภาพเคลื่อนไหวไม่ทำงาน แล้วคำซ้อนกันค้าง)
+  useEffect(() => {
+    if (prev === null) return;
+    const t = setTimeout(() => setPrev(null), 750);
+    return () => clearTimeout(t);
+  }, [prev]);
+
   return (
-    <span aria-hidden className="inline-flex flex-col items-center">
-      <span className="hand relative inline-grid overflow-hidden rounded-2xl border-[3px] border-ink bg-white px-6 leading-[1.75] shadow-[4px_4px_0_0_#1b1a17]">
-        {/* จองความกว้างไว้เท่าคำที่ยาวที่สุด กรอบจะได้ไม่ยืดหด */}
-        <span className="invisible col-start-1 row-start-1 whitespace-nowrap">เครื่องประดับ</span>
+    <span aria-hidden className="hand relative mx-1 inline-block align-middle font-normal select-none">
+      {/* ตัววัดความกว้าง (มองไม่เห็น) */}
+      <span ref={measure} className="invisible absolute top-0 left-0 w-max px-5 whitespace-nowrap">
+        {WORDS[i]}
+      </span>
+      <span
+        className="relative block overflow-hidden rounded-2xl border-[3px] border-ink bg-white leading-[1.7] shadow-[4px_4px_0_0_#1b1a17] transition-[width] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+        style={{ width: width ? width + 6 : undefined }}
+      >
+        {/* ความสูงหนึ่งบรรทัด */}
+        <span className="invisible block px-5 whitespace-nowrap">{WORDS[i]}</span>
         {prev !== null && (
-          <span key={`out-${prev}-${i}`} className="word-out col-start-1 row-start-1 text-center whitespace-nowrap">
+          <span
+            key={`out-${prev}-${i}`}
+            className="word-out absolute inset-x-0 top-0 text-center whitespace-nowrap"
+            onAnimationEnd={() => setPrev(null)}
+          >
             {WORDS[prev]}
           </span>
         )}
-        <span
-          key={`in-${i}`}
-          className={`col-start-1 row-start-1 text-center whitespace-nowrap ${prev !== null ? "word-in" : ""}`}
-        >
+        <span key={`in-${i}`} className={`absolute inset-x-0 top-0 text-center whitespace-nowrap ${prev !== null ? "word-in" : ""}`}>
           {WORDS[i]}
         </span>
-      </span>
-      {!still && (
-        <span className="mt-3 h-1 w-14 overflow-hidden rounded-full bg-ink/15">
+        {!still && (
           <span
-            key={i}
-            className="word-timer block h-full rounded-full bg-ink"
+            key={`t-${i}`}
+            className="word-timer absolute inset-x-3 bottom-1 block h-[3px] rounded-full bg-ink/80"
             style={{ ["--hold" as string]: `${hold}ms` } as CSSProperties}
           />
-        </span>
-      )}
+        )}
+      </span>
     </span>
   );
 }

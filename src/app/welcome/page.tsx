@@ -41,16 +41,13 @@ function Hero() {
   return (
     <section id="top" className="relative overflow-hidden bg-brand pt-24 sm:pt-28">
       <div className="relative mx-auto max-w-3xl px-5 pb-10 text-center sm:pb-14">
-        <h1 className="text-[1.7rem] leading-[1.3] font-bold tracking-tight sm:text-[2.6rem]">
+        <h1 className="text-[1.7rem] leading-[1.45] font-bold tracking-tight text-balance sm:text-[2.6rem]">
           <span className="sr-only">ไม่ว่าคุณจะปล่อยเช่าอะไร ก็จัดการได้ในแบบของคุณ</span>
-          <span aria-hidden className="line-rise" style={intro(0)}>
-            <span>ไม่ว่าคุณจะปล่อยเช่า</span>
+          <span aria-hidden className="intro block" style={intro(0)}>
+            ไม่ว่าคุณจะปล่อยเช่า <RotatingWord />
           </span>
-          <span aria-hidden className="intro my-3 block text-[1.9rem] font-normal sm:my-4 sm:text-5xl" style={intro(150)}>
-            <RotatingWord />
-          </span>
-          <span aria-hidden className="line-rise" style={intro(260)}>
-            <span>ก็จัดการได้ในแบบของคุณ</span>
+          <span aria-hidden className="intro mt-2 block sm:mt-3" style={intro(200)}>
+            ก็จัดการได้ในแบบของคุณ
           </span>
         </h1>
         <p className="intro mx-auto mt-6 max-w-2xl text-base text-ink/75 sm:text-lg" style={intro(420)}>
