@@ -16,7 +16,7 @@ const STEPS = [
 /** เริ่มใช้งาน 3 ขั้น: ป้ายพวงกุญแจห้อยบนราวแขวนกุญแจ */
 export function StartSteps() {
   return (
-    <section aria-labelledby="start-title" className="mx-auto max-w-6xl px-5 pt-24 pb-10 sm:pt-32">
+    <section id="start" aria-labelledby="start-title" className="scroll-mt-20 mx-auto max-w-6xl px-5 pt-24 pb-10 sm:pt-32">
       <h2 id="start-title" className="max-w-xl text-4xl leading-[1.15] font-bold tracking-tight sm:text-5xl">
         เริ่มใช้งานได้ใน 3 ขั้น
       </h2>

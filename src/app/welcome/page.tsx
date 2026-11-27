@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import type { CSSProperties } from "react";
 import { ShinyButton } from "@/components/ui/shiny-button";
 import { ArrowDown } from "lucide-react";
@@ -8,6 +7,7 @@ import { RotatingWord } from "./rotating-word";
 import { sriracha } from "@/lib/hand-font";
 import { StartSteps } from "./start-steps";
 import { TagRiver } from "./tag-river";
+import { TopBar } from "./top-bar";
 
 export const metadata: Metadata = {
   title: { absolute: "Kepz — มีอะไรให้เช่า ก็จัดการได้บน Kepz" },
@@ -37,33 +37,9 @@ export default function WelcomePage() {
   );
 }
 
-/** แถบเมนูลอยแบบเม็ดยาว: กดเข้าสู่ระบบ/เริ่มใช้งานได้ตลอด ไม่ว่าเลื่อนไปถึงไหน */
-function TopBar() {
-  return (
-    <header className="fixed inset-x-0 top-3 z-50 px-3" style={{ paddingTop: "env(safe-area-inset-top)" }}>
-      <nav className="mx-auto flex h-14 max-w-3xl items-center justify-between rounded-full border border-black/5 bg-white/75 pr-2 pl-5 shadow-[0_8px_30px_-12px_rgb(0_0_0/0.25)] backdrop-blur-xl">
-        <Link href="/welcome" className="text-2xl font-bold tracking-tight">
-          kepz<span className="text-brand-strong">.</span>
-        </Link>
-        <div className="flex items-center gap-1">
-          <Link href="/login" className="rounded-full px-4 py-2 text-sm font-semibold hover:bg-ink/5">
-            <span className="roll">
-              <span>เข้าสู่ระบบ</span>
-              <span aria-hidden>เข้าสู่ระบบ</span>
-            </span>
-          </Link>
-          <Link href="/signup" className="rounded-full bg-ink px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-black">
-            เริ่มใช้งาน
-          </Link>
-        </div>
-      </nav>
-    </header>
-  );
-}
-
 function Hero() {
   return (
-    <section className="relative overflow-hidden bg-brand pt-28 sm:pt-32">
+    <section id="top" className="relative overflow-hidden bg-brand pt-24 sm:pt-28">
       <div className="relative mx-auto max-w-3xl px-5 pb-10 text-center sm:pb-14">
         <h1 className="text-[1.9rem] leading-[1.2] font-bold tracking-tight sm:text-5xl">
           <span className="sr-only">ไม่ว่าคุณจะปล่อยเช่าอะไร ก็จัดการได้ในแบบของคุณ</span>
