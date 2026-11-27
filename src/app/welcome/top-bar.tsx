@@ -30,8 +30,9 @@ export function TopBar() {
       },
       { rootMargin: "-45% 0px -50% 0px" },
     );
-    const hero = document.getElementById("top");
-    [hero, ...LINKS.map((l) => document.getElementById(l.id))].forEach((el) => el && io.observe(el));
+    // ส่วนบนและส่วน 3 ขั้นไม่มีลิงก์ในแถบ: ถึงตรงนั้นแล้วไม่ต้องไฮไลต์ลิงก์ไหน
+    const extra = ["top", "start"].map((id) => document.getElementById(id));
+    [...extra, ...LINKS.map((l) => document.getElementById(l.id))].forEach((el) => el && io.observe(el));
 
     return () => {
       window.removeEventListener("scroll", onScroll);

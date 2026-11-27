@@ -18,10 +18,10 @@ export function MiddleDiagram() {
       <div className="mx-auto max-w-6xl px-5 pt-20 pb-20 sm:pt-28 sm:pb-28">
         <Reveal className="mx-auto max-w-2xl text-center">
           <h2 id="how-title" className="text-3xl leading-[1.2] font-bold tracking-tight sm:text-5xl">
-            Kepz อยู่ตรงกลาง <span className="inline-block">ระหว่างคุณกับผู้เช่า</span>
+            Kepz คือผู้ช่วยที่อยู่ตรงกลาง <span className="inline-block">ระหว่างคุณกับผู้เช่า</span>
           </h2>
           <p className="mx-auto mt-4 max-w-lg text-base leading-relaxed text-white/65 sm:text-lg">
-            คุณจัดการทุกอย่างผ่าน Kepz ที่เดียว ผู้เช่าได้บิลและใบเสร็จที่ถูกต้องทุกครั้ง
+            คุณใส่ข้อมูลห้องและผู้เช่าไว้ครั้งเดียว ที่เหลือ Kepz ช่วยคิดยอดบิล จดเงินที่รับ และบอกว่าใครยังไม่จ่าย
           </p>
         </Reveal>
 
@@ -31,7 +31,7 @@ export function MiddleDiagram() {
               icon={<Store className="size-9" strokeWidth={1.75} />}
               tone="bg-brand text-ink"
               title="เจ้าของกิจการ"
-              items={["ตั้งราคาและทำสัญญา", "กดออกบิลตามรอบ", "ดูรายรับทุกสาขา"]}
+              items={["ใส่ห้อง ราคา และผู้เช่า", "กดออกบิลเมื่อถึงรอบ", "กดรับเงินเมื่อลูกค้าโอน"]}
             />
           </Reveal>
           <Reveal variant="fade" delay={500}>
@@ -48,7 +48,7 @@ export function MiddleDiagram() {
               icon={<UserRound className="size-9" strokeWidth={1.75} />}
               tone="bg-white text-ink"
               title="ผู้เช่า"
-              items={["ได้บิลพร้อมช่องทางโอน", "โอนเงินตามยอดในบิล", "ได้ใบเสร็จทันที"]}
+              items={["ได้บิลที่ยอดถูกต้อง", "โอนเงินตามยอดในบิล", "ได้ใบเสร็จไว้เป็นหลักฐาน"]}
             />
           </Reveal>
         </div>
@@ -104,7 +104,7 @@ function Hub() {
       </span>
       <h3 className="mt-5 text-xl font-bold">Kepz ทำให้</h3>
       <ul className="mt-3 space-y-2 text-left text-[15px] text-white/85">
-        {["ออกบิลครบทุกห้องตามรอบ", "บันทึกเงินที่รับ ออกใบเสร็จ", "แยกค่าเช่ากับเงินประกันให้", "เตือนเมื่อมีคนค้างจ่าย"].map((t) => (
+        {["คิดยอดบิลให้ครบทุกห้อง", "ออกใบเสร็จ PDF ให้", "แยกค่าเช่ากับเงินประกัน", "บอกว่าใครค้างจ่าย"].map((t) => (
           <li key={t} className="flex items-center gap-2">
             <span className="grid size-5 shrink-0 place-items-center rounded-full bg-brand text-ink">
               <Check className="size-3" strokeWidth={3.5} />

@@ -3,6 +3,7 @@ import type { CSSProperties } from "react";
 import { ShinyButton } from "@/components/ui/shiny-button";
 import { CompareStory } from "./compare-story";
 import { MiddleDiagram } from "./middle-diagram";
+import { Phrases } from "./phrases";
 import { RotatingWord } from "./rotating-word";
 import { ScrollCue } from "./scroll-cue";
 import { sriracha } from "@/lib/hand-font";
@@ -28,7 +29,6 @@ export default function WelcomePage() {
       <MiddleDiagram />
       <CompareStory />
       <StartSteps />
-      <Closing />
       <footer className="flex flex-wrap items-center justify-between gap-3 px-5 py-8 text-sm text-ink/55 sm:px-10">
         <span className="text-lg font-bold text-ink">
           kepz<span className="text-brand-strong">.</span>
@@ -82,48 +82,4 @@ function Hero() {
 
 function intro(ms: number): CSSProperties {
   return { ["--intro-delay" as string]: `${ms}ms` };
-}
-
-function Closing() {
-  return (
-    <section className="overflow-hidden px-4 pt-10 pb-16 sm:px-6">
-      {/* ป้ายใหญ่ห้อยเชือก: แกว่งเข้ามาเมื่อเลื่อนถึง */}
-      <div className="tag-swing mx-auto max-w-4xl">
-        <svg aria-hidden className="mx-auto block h-16 w-6 overflow-visible" viewBox="0 0 24 64">
-          <path d="M12 0 C 4 22, 20 40, 12 64" fill="none" stroke="#1b1a17" strokeWidth="2.5" strokeLinecap="round" />
-        </svg>
-        <div className="big-tag relative -mt-3 bg-[#1b1a17] px-6 pt-20 pb-16 text-center text-white sm:px-12 sm:pb-20">
-          <span aria-hidden className="absolute top-7 left-1/2 size-6 -translate-x-1/2 rounded-full bg-white ring-4 ring-brand" />
-          <p className="hand text-2xl text-brand">พร้อมลองหรือยัง</p>
-          <h2 className="mx-auto mt-4 max-w-3xl text-4xl leading-[1.15] font-bold tracking-tight sm:text-6xl">
-            <Phrases text="เริ่มใช้ Kepz กับของที่คุณ ให้เช่าอยู่วันนี้" />
-          </h2>
-          <p className="mx-auto mt-5 max-w-lg text-lg leading-relaxed text-white/65">
-            <Phrases text="สมัครแล้วตั้งค่าตามขั้นตอนได้ทันที มีห้องเดียวหรือหลายสาขาก็ใช้ได้" />
-          </p>
-          <ShinyButton href="/signup" className="mt-10 w-full max-w-xs sm:w-auto">
-            เริ่มใช้งาน Kepz
-          </ShinyButton>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/**
- * ภาษาไทยไม่เว้นวรรคระหว่างคำ เบราว์เซอร์จึงตัดบรรทัดกลางวลีได้
- * แยกตามช่องว่างแล้วให้แต่ละวลีอยู่บรรทัดเดียวกันเสมอ
- */
-function Phrases({ text }: { text: string }) {
-  const words = text.split(" ");
-  return (
-    <>
-      {words.map((w, i) => (
-        <span key={i} className="inline-block whitespace-nowrap">
-          {w}
-          {i < words.length - 1 && " "}
-        </span>
-      ))}
-    </>
-  );
 }

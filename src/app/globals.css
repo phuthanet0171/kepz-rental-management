@@ -791,6 +791,10 @@ dialog::backdrop {
   clip-path: polygon(9% 0, 91% 0, 100% 9%, 100% 100%, 0 100%, 0 9%);
   transform-origin: 50% -60px;
 }
+/* ป้ายสูง (3 ขั้น + ปุ่ม): ตัดมุมเป็นระยะคงที่ ไม่เฉียงยาวตามความสูง */
+.cta-tag {
+  clip-path: polygon(min(5rem, 16%) 0, calc(100% - min(5rem, 16%)) 0, 100% 2.75rem, 100% 100%, 0 100%, 0 2.75rem);
+}
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
     .tag-swing {
