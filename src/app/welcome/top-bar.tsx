@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const LINKS = [
+  { id: "how", label: "Kepz ทำงานยังไง" },
   { id: "story", label: "Kepz ช่วยอะไร" },
   { id: "start", label: "เริ่มใน 3 ขั้น" },
 ];

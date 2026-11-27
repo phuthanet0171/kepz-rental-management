@@ -968,3 +968,73 @@ dialog::backdrop {
     transform: scaleX(1);
   }
 }
+
+/* ===== Kepz อยู่ตรงกลาง: จุดวิ่งบนเส้นเชื่อม + วงแหวนขยายออก ===== */
+.flow-dot {
+  left: 50%;
+  top: 0;
+  translate: -50% -50%;
+}
+@media (min-width: 1024px) {
+  .flow-dot {
+    top: 50%;
+    left: 0;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .flow-a {
+    animation: flow-y 2.4s ease-in-out infinite;
+  }
+  .flow-b {
+    animation: flow-y 2.4s ease-in-out infinite reverse;
+  }
+  @media (min-width: 1024px) {
+    .flow-a {
+      animation-name: flow-x;
+    }
+    .flow-b {
+      animation-name: flow-x;
+    }
+  }
+  .hub-ring {
+    animation: hub-ring 3.6s ease-out infinite;
+  }
+}
+@keyframes flow-y {
+  0% {
+    top: 0;
+    opacity: 0;
+  }
+  15%,
+  85% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+@keyframes flow-x {
+  0% {
+    left: 0;
+    opacity: 0;
+  }
+  15%,
+  85% {
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+@keyframes hub-ring {
+  from {
+    scale: 1;
+    opacity: 0.9;
+  }
+  to {
+    scale: 3.2;
+    opacity: 0;
+  }
+}

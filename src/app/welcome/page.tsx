@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 import { ShinyButton } from "@/components/ui/shiny-button";
 import { CompareStory } from "./compare-story";
+import { MiddleDiagram } from "./middle-diagram";
 import { RotatingWord } from "./rotating-word";
 import { ScrollCue } from "./scroll-cue";
 import { sriracha } from "@/lib/hand-font";
@@ -24,6 +25,7 @@ export default function WelcomePage() {
       <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('motion-ready')" }} />
       <TopBar />
       <Hero />
+      <MiddleDiagram />
       <CompareStory />
       <StartSteps />
       <Closing />

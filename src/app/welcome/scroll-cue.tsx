@@ -17,7 +17,7 @@ export function ScrollCue() {
 
   return (
     <a
-      href="#story"
+      href="#how"
       aria-hidden={hidden || undefined}
       tabIndex={hidden ? -1 : undefined}
       className={clsx(
