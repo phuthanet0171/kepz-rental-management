@@ -48,22 +48,23 @@ function Hero() {
     <section id="top" className="relative flex min-h-[100svh] flex-col overflow-hidden bg-brand pt-16">
       <div className="flex flex-1 items-center justify-center px-5 py-10 sm:py-12">
         <div className="mx-auto max-w-3xl text-center">
-          <h1 className="text-[1.7rem] leading-[1.35] font-bold tracking-tight sm:text-[2.6rem]">
+          {/* ขนาดตัวอักษรตามความกว้างจอ: บรรทัดแรกพร้อมคำที่ยาวที่สุด ("เครื่องประดับ") ต้องพอดีบรรทัดเดียวเสมอ */}
+          <h1 className="text-[clamp(1rem,calc((100vw_-_80px)/14),2.6rem)] leading-[1.35] font-bold tracking-tight">
             <span className="sr-only">ไม่ว่าคุณจะปล่อยเช่าอะไร ก็จัดการได้ในแบบของคุณ</span>
-            <span aria-hidden className="intro flex flex-wrap items-center justify-center gap-x-3 gap-y-2" style={intro(0)}>
+            <span aria-hidden className="intro flex flex-nowrap items-center justify-center gap-2 whitespace-nowrap sm:gap-3" style={intro(0)}>
               <span>ไม่ว่าคุณจะปล่อยเช่า</span>
               <RotatingWord />
             </span>
-            <span aria-hidden className="intro mt-3 block sm:mt-4" style={intro(200)}>
+            <span aria-hidden className="intro mt-2.5 block sm:mt-4" style={intro(200)}>
               ก็จัดการได้ในแบบของคุณ
             </span>
           </h1>
-          <p className="intro mx-auto mt-4 max-w-2xl text-base text-ink/75 sm:text-lg" style={intro(420)}>
+          <p className="intro mx-auto mt-4 max-w-2xl text-[15px] text-ink/75 sm:text-lg" style={intro(420)}>
             <Phrases text="ระบบจัดการธุรกิจให้เช่าครบวงจร จัดการรายการเช่าได้ในที่เดียว" />
           </p>
-          <div className="intro mt-8 flex justify-center" style={intro(560)}>
-            <span className="rainbow-glow w-full max-w-xs sm:w-auto">
-              <ShinyButton href="/signup" className="shiny-hero w-full">
+          <div className="intro mt-7 flex justify-center sm:mt-8" style={intro(560)}>
+            <span className="rainbow-glow">
+              <ShinyButton href="/signup" className="shiny-hero">
                 เริ่มใช้งาน Kepz
               </ShinyButton>
             </span>

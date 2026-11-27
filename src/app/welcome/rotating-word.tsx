@@ -55,15 +55,15 @@ export function RotatingWord() {
   return (
     <span aria-hidden className="hand relative inline-block font-normal select-none">
       {/* ตัววัดความกว้าง (มองไม่เห็น) */}
-      <span ref={measure} className="invisible absolute top-0 left-0 w-max px-5 whitespace-nowrap">
+      <span ref={measure} className="invisible absolute top-0 left-0 w-max px-3 whitespace-nowrap sm:px-5">
         {WORDS[i]}
       </span>
       <span
-        className="relative block overflow-hidden rounded-2xl border-[3px] border-ink bg-white leading-[1.7] shadow-[4px_4px_0_0_#1b1a17] transition-[width] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+        className="relative block overflow-hidden rounded-xl border-[2.5px] border-ink bg-white leading-[1.7] shadow-[3px_3px_0_0_#1b1a17] sm:rounded-2xl sm:border-[3px] sm:shadow-[4px_4px_0_0_#1b1a17] transition-[width] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
         style={{ width: width ? width + 6 : undefined }}
       >
         {/* ความสูงหนึ่งบรรทัด */}
-        <span className="invisible block px-5 whitespace-nowrap">{WORDS[i]}</span>
+        <span className="invisible block px-3 whitespace-nowrap sm:px-5">{WORDS[i]}</span>
         {prev !== null && (
           <span
             key={`out-${prev}-${i}`}
