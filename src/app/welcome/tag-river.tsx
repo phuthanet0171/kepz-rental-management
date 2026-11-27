@@ -30,7 +30,7 @@ export function TagRiver() {
     <section aria-label="ตัวอย่างสิ่งที่จัดการได้บน Kepz" className="overflow-hidden">
       <TagRow tags={ROW_A} speed={34} />
       <TagRow tags={ROW_B} speed={-28} />
-      <p className="mt-2 px-5 text-center text-xs text-ink/50">ตัวอย่างของให้เช่าที่ดูแลบน Kepz ได้ ทั้งรายเดือน รายวัน และรายชั่วโมง</p>
+      <p className="mt-2 px-5 text-center text-[11px] text-ink/45">ตัวอย่างของให้เช่าที่ดูแลบน Kepz ได้ ทั้งรายเดือน รายวัน และรายชั่วโมง</p>
     </section>
   );
 }

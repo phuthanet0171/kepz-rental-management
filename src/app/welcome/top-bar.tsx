@@ -80,17 +80,31 @@ export function TopBar() {
           })}
         </ul>
 
-        <Link
-          href="/login"
-          className={clsx(
-            "ml-auto rounded-full border-[1.5px] px-5 py-2 text-sm font-semibold transition",
-            solid
-              ? "border-white/35 text-white hover:border-brand hover:text-brand"
-              : "border-ink/30 text-ink hover:border-ink hover:bg-ink hover:text-brand",
-          )}
-        >
-          เข้าสู่ระบบ
-        </Link>
+        <div className="ml-auto flex items-center gap-2">
+          <Link
+            href="/login"
+            className={clsx(
+              "rounded-full border-[1.5px] px-4 py-2 text-sm font-semibold transition sm:px-5",
+              solid
+                ? "border-white/35 text-white hover:border-brand hover:text-brand"
+                : "border-ink/30 text-ink hover:border-ink hover:bg-ink hover:text-brand",
+            )}
+          >
+            เข้าสู่ระบบ
+          </Link>
+          {/* โผล่เมื่อเลื่อนพ้นส่วนบน (ส่วนบนมีปุ่มเริ่มใช้งานใหญ่อยู่แล้ว) */}
+          <Link
+            href="/signup"
+            aria-hidden={!solid || undefined}
+            tabIndex={solid ? undefined : -1}
+            className={clsx(
+              "rounded-full bg-brand px-4 py-2 text-sm font-bold text-ink transition-all duration-300 hover:bg-white sm:px-5",
+              solid ? "animate-[fade-in_0.3s_ease-out]" : "hidden",
+            )}
+          >
+            เริ่มใช้งาน
+          </Link>
+        </div>
       </nav>
     </header>
   );
