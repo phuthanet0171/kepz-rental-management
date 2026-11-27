@@ -1,14 +1,14 @@
 import clsx from "clsx";
-import { BadgeCheck, Check, Palette } from "lucide-react";
+import { Check } from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
 import { Reveal } from "@/components/motion/reveal";
 import { gridBackground, TILE_CLASS, type TileState } from "@/components/floor-plan/shared";
-import { FloorPlanLegend, OverdueBadge, PendingBadge } from "@/components/floor-plan/viewer";
+import { OverdueBadge, PendingBadge } from "@/components/floor-plan/viewer";
 import { ShinyButton } from "@/components/ui/shiny-button";
 import { Phrases } from "./phrases";
 
 /** แต่ละขั้น: สิ่งที่ทำ (ขึ้นต้นด้วยคำกริยา) + ตัวอย่างหน้าจอเล็กๆ ว่าทำแล้วได้อะไร */
-const STEPS: { title: string; body: string; preview: ReactNode; tilt: string; wide?: boolean }[] = [
+const STEPS: { title: string; body: string; preview: ReactNode; tilt: string }[] = [
   {
     title: "สมัคร แล้วตั้งชื่อกิจการ",
     body: "ใช้แค่อีเมล แล้วใส่ชื่อหอพัก ร้าน หรือตลาดของคุณ",
@@ -17,10 +17,9 @@ const STEPS: { title: string; body: string; preview: ReactNode; tilt: string; wi
   },
   {
     title: "วาดผังที่ให้เช่า",
-    body: "วางช่องลงบนผังให้เหมือนสถานที่จริง แล้วสลับไปดูสถานะเช่าได้ในภาพเดียว ช่องไหนว่าง ใกล้หมดสัญญา รอชำระ หรือค้างชำระ",
+    body: "วาดผังให้เหมือนสถานที่จริง เช่น ลานจอดรถ แล้วดูได้ทันทีว่าช่องไหนว่าง ช่องไหนมีคนเช่า หรือยังไม่จ่าย",
     preview: <PlanPreview />,
-    tilt: "lg:rotate-[0.4deg]",
-    wide: true,
+    tilt: "lg:rotate-[0.6deg]",
   },
   {
     title: "ทำสัญญา แล้วได้บิลแรกทันที",
@@ -60,8 +59,7 @@ export function StartSteps() {
                 <Node>{i + 1}</Node>
                 <article
                   className={clsx(
-                    "grid gap-5 rounded-2xl border-2 border-ink bg-white p-4 shadow-[5px_5px_0_0_#1b1a17] transition-transform duration-300 hover:rotate-0 sm:p-5",
-                    !s.wide && "sm:grid-cols-[minmax(0,1fr)_14rem] sm:items-center",
+                    "grid gap-5 rounded-2xl border-2 border-ink bg-white p-4 shadow-[5px_5px_0_0_#1b1a17] transition-transform duration-300 hover:rotate-0 sm:grid-cols-[minmax(0,1fr)_14rem] sm:items-center sm:p-5",
                     s.tilt,
                   )}
                 >
@@ -69,7 +67,7 @@ export function StartSteps() {
                     <h3 className="text-xl leading-snug font-bold sm:text-[22px]"><Phrases text={s.title} /></h3>
                     <p className="mt-1.5 text-base leading-relaxed text-ink/65">{s.body}</p>
                   </div>
-                  <div aria-hidden className={clsx("rounded-xl bg-canvas", s.wide ? "p-2 sm:p-3" : "p-3")}>
+                  <div aria-hidden className="rounded-xl bg-canvas p-3">
                     {s.preview}
                   </div>
                 </article>
@@ -155,68 +153,70 @@ function NamePreview() {
   );
 }
 
-/* ===== ผังสถานที่: ใช้สีสถานะ ป้าย และตารางเดียวกับหน้าผังจริงของ Kepz ===== */
+/* ===== ผังลานจอดรถตัวอย่าง: ใช้สีสถานะ ป้าย ! และพื้นตารางเดียวกับหน้าผังจริงของ Kepz ===== */
 
-type Spot = { code: string; state: TileState; who?: string; pending?: boolean; x: number; y: number; w: number; h: number };
+type Spot = { code: string; state: TileState; pending?: boolean };
 
-/** ผังตัวอย่าง (ข้อมูลสมมติ) ให้เห็นทุกสถานะในภาพเดียว · ตาราง 9 × 6 ช่อง */
+/** ข้อมูลสมมติ: ลานจอด 10 ช่อง มีครบทุกสถานะ */
 const SPOTS: Spot[] = [
-  { code: "A01", state: "available", x: 1, y: 1, w: 2, h: 2 },
-  { code: "A02", state: "occupied", who: "คุณเอ", x: 1, y: 3, w: 2, h: 2 },
-  { code: "A03", state: "expiring", who: "คุณบี", x: 1, y: 5, w: 2, h: 2 },
-  { code: "M01", state: "occupied", who: "ร้านซี", pending: true, x: 4, y: 1, w: 2, h: 2 },
-  { code: "M02", state: "overdue", who: "คุณดี", x: 4, y: 3, w: 2, h: 2 },
-  { code: "M03", state: "maintenance", x: 4, y: 5, w: 2, h: 2 },
-  { code: "P01", state: "available", x: 7, y: 1, w: 3, h: 1 },
-  { code: "P02", state: "occupied", x: 7, y: 2, w: 3, h: 1 },
-  { code: "P03", state: "available", x: 7, y: 3, w: 3, h: 1 },
-  { code: "P04", state: "occupied", x: 7, y: 4, w: 3, h: 1 },
-  { code: "P05", state: "expiring", x: 7, y: 5, w: 3, h: 1 },
-  { code: "P06", state: "available", x: 7, y: 6, w: 3, h: 1 },
+  { code: "P01", state: "occupied" },
+  { code: "P02", state: "available" },
+  { code: "P03", state: "available" },
+  { code: "P04", state: "occupied", pending: true },
+  { code: "P05", state: "expiring" },
+  { code: "P06", state: "occupied" },
+  { code: "P07", state: "overdue" },
+  { code: "P08", state: "available" },
+  { code: "P09", state: "maintenance" },
+  { code: "P10", state: "occupied" },
+];
+
+const LEGEND: { label: string; cls: string; dot?: string }[] = [
+  { label: "ว่าง", cls: TILE_CLASS.available },
+  { label: "มีผู้เช่า", cls: TILE_CLASS.occupied },
+  { label: "ใกล้หมดสัญญา", cls: TILE_CLASS.expiring },
+  { label: "รอชำระ", cls: "border-[#f97316] bg-[#f97316]" },
+  { label: "ค้างชำระ", cls: TILE_CLASS.overdue },
+  { label: "ปิดปรับปรุง", cls: TILE_CLASS.maintenance },
 ];
 
 function PlanPreview() {
+  const row = (from: number) => (
+    <div className="grid grid-cols-5 gap-1">
+      {SPOTS.slice(from, from + 5).map((u, i) => (
+        <span
+          key={u.code}
+          className={clsx(
+            "seq-pop tabular relative grid h-8 place-items-center rounded-md border-2 text-[9.5px] leading-none font-bold",
+            TILE_CLASS[u.state],
+            u.pending && "ring-2 ring-[#f97316] ring-offset-1",
+          )}
+          style={{ ["--i" as string]: from + i } as CSSProperties}
+        >
+          {u.code}
+          {u.pending && <PendingBadge size={12} className="absolute -top-1.5 -right-1.5" />}
+          {u.state === "overdue" && <OverdueBadge size={12} className="absolute -top-1.5 -right-1.5" />}
+        </span>
+      ))}
+    </div>
+  );
   return (
     <div className="text-ink">
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-        <p className="flex rounded-xl bg-line/70 p-0.5 text-[11px] font-semibold sm:text-xs">
-          <span className="flex items-center gap-1 rounded-lg px-2.5 py-1 text-muted">
-            <Palette className="size-3.5" /> ผังปกติ
-          </span>
-          <span className="flex items-center gap-1 rounded-lg bg-ink px-2.5 py-1 text-white">
-            <BadgeCheck className="size-3.5" /> ดูสถานะเช่า
-          </span>
-        </p>
+      <p className="mb-1.5 text-[10.5px] font-semibold text-muted">ตัวอย่าง: ผังลานจอดรถ 10 ช่อง</p>
+      <div className="rounded-lg border border-line bg-white p-1.5" style={gridBackground(12)}>
+        {row(0)}
+        {/* ทางรถวิ่ง: วาดไว้ให้เหมือนสถานที่จริง ไม่ใช่ช่องเช่า */}
+        <p className="my-1 rounded-md bg-line/70 py-0.5 text-center text-[9px] text-muted">ทางรถวิ่ง</p>
+        {row(5)}
       </div>
-      <FloorPlanLegend className="mt-2 gap-x-3 text-[10.5px] sm:text-[11px]" />
-      <div
-        className="mt-2.5 grid grid-cols-9 grid-rows-[repeat(6,1.85rem)] gap-0.5 rounded-lg border border-line bg-white p-1.5 sm:grid-rows-[repeat(6,2.3rem)] sm:p-2"
-        style={gridBackground(18)}
-      >
-        {/* ทางเดิน: วาดไว้ให้เหมือนสถานที่จริง ไม่ใช่ห้องเช่า */}
-        <span className="col-start-3 row-span-6 row-start-1 mx-1 grid place-items-center rounded-md bg-line/60 text-[9px] text-muted [writing-mode:vertical-rl] sm:text-[10px]">
-          ทางเดิน
-        </span>
-        <span className="col-span-1 col-start-6 row-span-6 row-start-1 mx-1 grid place-items-center rounded-md bg-line/60 text-[9px] text-muted [writing-mode:vertical-rl] sm:text-[10px]">
-          ทางเดิน
-        </span>
-        {SPOTS.map((u, i) => (
-          <span
-            key={u.code}
-            className={clsx(
-              "seq-pop relative flex min-w-0 flex-col items-center justify-center rounded-md border-2 text-center leading-tight",
-              TILE_CLASS[u.state],
-              u.pending && "ring-[3px] ring-[#f97316] ring-offset-1",
-            )}
-            style={{ gridColumn: `${u.x} / span ${u.w}`, gridRow: `${u.y} / span ${u.h}`, ["--i" as string]: i } as CSSProperties}
-          >
-            <b className="text-[10px] sm:text-xs">{u.code}</b>
-            {u.who && u.h > 1 && <span className="w-full truncate px-0.5 text-[8.5px] sm:text-[10px]">{u.who}</span>}
-            {u.pending && <PendingBadge size={14} className="absolute -top-1.5 -right-1.5" />}
-            {u.state === "overdue" && <OverdueBadge size={14} className="absolute -top-1.5 -right-1.5" />}
+      <p className="mt-2 grid grid-cols-2 gap-x-2 gap-y-1 text-[9.5px] text-ink/65">
+        {LEGEND.map((l) => (
+          <span key={l.label} className="flex items-center gap-1">
+            <i className={clsx("size-2.5 shrink-0 rounded-sm border-2", l.cls)} />
+            {l.label}
           </span>
         ))}
-      </div>
+      </p>
     </div>
   );
 }
