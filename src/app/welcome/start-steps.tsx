@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { Check } from "lucide-react";
+import { Check, Minus, Plus } from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
 import { Reveal } from "@/components/motion/reveal";
 import { ShinyButton } from "@/components/ui/shiny-button";
@@ -15,22 +15,23 @@ const STEPS: { title: string; body: string; preview: ReactNode; tilt: string }[]
   },
   {
     title: "เพิ่มของที่ให้เช่า",
-    body: "ใส่ห้อง ที่จอด หรือแผงพร้อมราคา เพิ่มทีละช่องหรือหลายช่องพร้อมกันก็ได้",
+    body: "บอกว่ามีอะไรให้เช่า กี่ช่อง ราคาเท่าไร เช่น ห้องแอร์ 8 ห้อง เดือนละ 3,500 บาท แล้ว Kepz ตั้งรหัสห้องให้เอง",
     preview: <UnitsPreview />,
     tilt: "lg:rotate-[0.6deg]",
   },
   {
-    title: "ใส่ผู้เช่า แล้วเริ่มเก็บเงิน",
-    body: "ใส่ชื่อผู้เช่า ค่าเช่า และวันจ่าย ถึงรอบเมื่อไร Kepz เตรียมบิลไว้ให้กดออก",
-    preview: <BillPreview />,
+    title: "ทำสัญญา แล้วได้บิลแรกทันที",
+    body: "เลือกห้องว่าง ใส่ชื่อผู้เช่า ค่าเช่า และเงินประกัน กดสร้างสัญญา Kepz ออกใบวางบิลแรกให้อัตโนมัติ",
+    preview: <ContractPreview />,
     tilt: "lg:-rotate-[0.4deg]",
   },
 ];
 
 /**
  * เริ่มใช้งาน: พื้นเหลืองเต็มจอ (คู่กับส่วนบนสุด) ปิดท้ายหน้า
- * - คอม: ซ้ายคือหัวข้อ + ปุ่ม (ติดจออยู่ระหว่างเลื่อน) ขวาคือเส้นทาง 3 ขั้น
- * - มือถือ: หัวข้อ → 3 ขั้น → ปุ่ม เรียงลงมาตามลำดับที่อ่าน
+ * - คอม: หัวข้อซ้ายบน · 3 ขั้นตอนฝั่งขวา · ปุ่มซ้ายล่าง (อ่านครบทุกขั้นก่อนถึงปุ่ม)
+ * - มือถือ: หัวข้อ → 3 ขั้นตอน → ปุ่ม เรียงลงมาตามลำดับที่อ่าน
+ * ตัวอย่างในการ์ดเลียนแบบหน้าจริงของ Kepz (ฟอร์มเพิ่มของให้เช่า และสรุปสัญญา)
  * เส้นทางจบที่ "ออกบิลแรกได้เลย" ให้เห็นว่าทำครบแล้วได้อะไร
  */
 export function StartSteps() {
@@ -40,19 +41,14 @@ export function StartSteps() {
       aria-labelledby="start-title"
       className="scroll-mt-16 border-t-[3px] border-ink bg-brand [background-image:radial-gradient(rgb(27_26_23/0.09)_1.5px,transparent_1.5px)] [background-size:26px_26px]"
     >
-      <div className="mx-auto grid max-w-6xl gap-12 px-5 pt-20 pb-20 sm:pt-28 sm:pb-28 lg:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)] lg:gap-16">
-        <div className="lg:sticky lg:top-28 lg:self-start">
-          <Reveal>
-            <h2 id="start-title" className="text-3xl leading-[1.2] font-bold tracking-tight sm:text-[2.6rem]">
-              เริ่มใช้ได้<span className="inline-block">ใน 3 ขั้น</span>
-            </h2>
-          </Reveal>
-          <Reveal delay={200} className="mt-8 hidden lg:block">
-            <StartCta />
-          </Reveal>
-        </div>
+      <div className="mx-auto grid max-w-6xl gap-12 px-5 pt-20 pb-20 sm:pt-28 sm:pb-28 lg:grid-cols-[minmax(0,0.62fr)_minmax(0,1.38fr)] lg:grid-rows-[auto_1fr] lg:gap-x-14 lg:gap-y-10">
+        <Reveal className="lg:col-start-1 lg:row-start-1">
+          <h2 id="start-title" className="text-3xl leading-[1.2] font-bold tracking-tight sm:text-[2.6rem]">
+            เริ่มใช้ได้<span className="inline-block">ใน 3 ขั้นตอน</span>
+          </h2>
+        </Reveal>
 
-        <div>
+        <div className="lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <ol className="relative space-y-7 sm:space-y-9">
             {/* เส้นทางที่ร้อยทุกขั้นเข้าด้วยกัน */}
             <span aria-hidden className="absolute top-6 bottom-6 left-[1.375rem] w-[3px] rounded-full bg-ink sm:left-[1.625rem]" />
@@ -61,7 +57,7 @@ export function StartSteps() {
                 <Node>{i + 1}</Node>
                 <article
                   className={clsx(
-                    "grid gap-5 rounded-2xl border-2 border-ink bg-white p-4 shadow-[5px_5px_0_0_#1b1a17] transition-transform duration-300 hover:rotate-0 sm:grid-cols-[minmax(0,1fr)_12rem] sm:items-center sm:p-5",
+                    "grid gap-5 rounded-2xl border-2 border-ink bg-white p-4 shadow-[5px_5px_0_0_#1b1a17] transition-transform duration-300 hover:rotate-0 sm:grid-cols-[minmax(0,1fr)_14rem] sm:items-center sm:p-5",
                     s.tilt,
                   )}
                 >
@@ -79,14 +75,15 @@ export function StartSteps() {
               <Node done>
                 <Check className="size-6" strokeWidth={3.5} />
               </Node>
-              <p className="text-xl font-bold sm:text-2xl"><Phrases text="เสร็จแล้ว ออกบิลแรกได้เลย" /></p>
+              <p className="text-xl font-bold sm:text-2xl"><Phrases text="เสร็จแล้ว ส่งบิลแรกให้ผู้เช่าได้เลย" /></p>
             </Reveal>
           </ol>
-
-          <Reveal className="mt-14 lg:hidden">
-            <StartCta />
-          </Reveal>
         </div>
+
+        {/* ปุ่มอยู่ซ้ายล่าง ตรงกับบรรทัด "เสร็จแล้ว" ของเส้นทาง */}
+        <Reveal delay={300} className="lg:col-start-1 lg:row-start-2 lg:self-end">
+          <StartCta />
+        </Reveal>
       </div>
     </section>
   );
@@ -154,41 +151,69 @@ function NamePreview() {
   );
 }
 
+/** เหมือนการ์ด "เพิ่มของให้เช่า" ในหน้าตั้งค่ากิจการจริง: ชื่อ จำนวน ราคา คิดราคา และรหัสที่จะได้ */
 function UnitsPreview() {
   return (
-    <div className="text-ink">
-      <div className="grid grid-cols-4 gap-1.5">
+    <div className="rounded-xl border border-line bg-white p-2.5 text-ink">
+      <p className="text-sm font-bold">ห้องแอร์</p>
+      <div className="mt-1.5 grid grid-cols-2 gap-1.5">
+        <div>
+          <p className="text-[10px] text-muted">จำนวน</p>
+          <p className="mt-0.5 flex h-7 items-center justify-between rounded-lg border border-line px-2 text-[11px] text-ink/60">
+            <Minus className="size-3" />
+            <b className="tabular text-sm text-ink">8</b>
+            <Plus className="size-3" />
+          </p>
+        </div>
+        <div>
+          <p className="text-[10px] text-muted">ราคา</p>
+          <p className="tabular mt-0.5 flex h-7 items-center gap-1 rounded-lg border border-line px-2 text-sm font-semibold">
+            <span className="text-[11px] font-normal text-muted">฿</span>3,500
+          </p>
+        </div>
+      </div>
+      <p className="mt-1.5 grid grid-cols-3 rounded-lg bg-canvas p-0.5 text-center text-[9.5px] font-semibold text-muted">
+        <span className="rounded-md bg-white py-1 text-ink shadow-sm">ต่อเดือน</span>
+        <span className="py-1">ต่อวัน</span>
+        <span className="py-1">ต่อชั่วโมง</span>
+      </p>
+      <p className="mt-2 flex flex-wrap gap-1">
         {Array.from({ length: 8 }, (_, i) => (
           <span
             key={i}
-            className="seq-pop tabular grid h-7 place-items-center rounded-md border-2 border-ink/20 bg-white text-[10px] font-semibold"
+            className="seq-pop tabular rounded-md border-2 border-ok bg-ok-soft px-1 py-px text-[9.5px] font-bold"
             style={{ ["--i" as string]: i } as CSSProperties}
           >
             A0{i + 1}
           </span>
         ))}
-      </div>
-      <p className="mt-2.5 text-[11px] font-medium text-ink/55">
-        8 ห้อง ราคา <span className="tabular font-bold text-ink">3,500</span> บาท/เดือน
       </p>
     </div>
   );
 }
 
-function BillPreview() {
+/** เหมือนกล่อง "สรุปสัญญา" ในหน้าสร้างสัญญาจริง: กดสร้างแล้วได้ใบวางบิลแรกพร้อมกัน */
+function ContractPreview() {
   return (
-    <div className="relative rounded-lg border-2 border-ink bg-white p-2.5 text-ink">
-      <p className="flex justify-between text-[11px] font-medium text-ink/55">
-        <span>บิลห้อง A01</span>
-        <span>ธ.ค.</span>
-      </p>
-      <p className="tabular mt-0.5 text-lg font-bold">
-        3,500 <span className="text-xs font-semibold">บาท</span>
-      </p>
-      <span className="mt-1.5 inline-block rounded-md bg-brand px-2.5 py-1 text-[11px] font-bold">ออกบิล</span>
-      <span className="stamp hand absolute right-2 bottom-2 -rotate-[8deg] rounded-md border-2 border-ok px-1.5 text-[15px] leading-snug text-ok">
-        พร้อมส่ง
-      </span>
+    <div className="rounded-xl bg-ink p-2.5 text-white">
+      <p className="text-[10px] text-white/60">สรุปสัญญา</p>
+      <p className="text-sm font-semibold">A01 ห้องแอร์</p>
+      <div className="seq-pop mt-2 rounded-lg bg-white/10 p-2 text-[10.5px]" style={{ ["--i" as string]: 2 } as CSSProperties}>
+        <p className="mb-1 font-semibold text-brand">ใบวางบิลแรก (ออกให้อัตโนมัติ)</p>
+        <p className="flex justify-between">
+          <span className="text-white/80">ค่าเช่า 1 เดือน</span>
+          <span className="tabular">3,500</span>
+        </p>
+        <p className="flex justify-between">
+          <span className="text-white/80">เงินประกัน</span>
+          <span className="tabular">3,500</span>
+        </p>
+        <p className="mt-1 flex justify-between border-t border-white/20 pt-1 font-semibold">
+          <span>รวมที่ต้องชำระ</span>
+          <span className="tabular text-brand">7,000 บาท</span>
+        </p>
+      </div>
+      <p className="mt-2 rounded-lg bg-brand py-1.5 text-center text-[11px] font-bold text-ink">สร้างสัญญาเช่า</p>
     </div>
   );
 }
