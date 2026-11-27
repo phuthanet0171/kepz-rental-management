@@ -169,31 +169,22 @@ dialog::backdrop {
 }
 
 /* ===== ป้ายเช่าไหลผ่านจอ (หน้าแรก) ===== */
+/* แนวโค้งแบบผนังด้านใน: JS (tag-river.tsx) หมุนแต่ละป้ายตามตำแหน่งบนจอ */
 .tag-row {
-  mask-image: linear-gradient(90deg, transparent, black 6%, black 94%, transparent);
+  perspective: 700px;
+  perspective-origin: 50% 50%;
 }
 .tag-track {
   display: flex;
   gap: 1.25rem;
   width: max-content;
   padding-inline: 0.625rem;
+  transform-style: preserve-3d;
+  will-change: transform;
 }
-@media (prefers-reduced-motion: no-preference) {
-  .tag-track {
-    animation: tag-drift 60s linear infinite;
-  }
-  .tag-row[data-reverse] .tag-track {
-    animation-direction: reverse;
-    animation-duration: 70s;
-  }
-  .tag-row:hover .tag-track {
-    animation-play-state: paused;
-  }
-}
-@keyframes tag-drift {
-  to {
-    transform: translateX(-50%);
-  }
+.tag-item {
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
 }
 /* ลดการเคลื่อนไหว: ป้ายไม่ไหล เลื่อนดูเองได้ */
 @media (prefers-reduced-motion: reduce) {
@@ -226,19 +217,30 @@ dialog::backdrop {
 
   /* เปิดหน้า: ส่วนบนสุดค่อยๆ ขึ้นมาตามลำดับ (หัวข้อทีละบรรทัด → คำอธิบาย → ปุ่ม → จอมือถือ) */
   .intro {
-    animation: intro-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: intro-up 1s cubic-bezier(0.16, 1, 0.3, 1) both;
     animation-delay: var(--intro-delay, 0ms);
   }
   @keyframes intro-up {
     from {
       opacity: 0;
-      transform: translateY(28px);
-      filter: blur(6px);
+      transform: translateY(18px);
     }
     to {
       opacity: 1;
       transform: none;
-      filter: blur(0);
+    }
+  }
+  /* หัวข้อใหญ่: แต่ละบรรทัดเลื่อนขึ้นจากใต้ขอบของตัวเอง เหมือนตัวพิมพ์ถูกดันขึ้นมา */
+  .line-rise > span {
+    animation: line-rise 1.15s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--intro-delay, 0ms);
+  }
+  @keyframes line-rise {
+    from {
+      transform: translateY(110%);
+    }
+    to {
+      transform: none;
     }
   }
   /* ป้ายลอยรอบจอมือถือ ขยับขึ้นลงช้าๆ */
@@ -507,5 +509,129 @@ dialog::backdrop {
   main:has(.print-report) {
     padding: 0 !important;
     max-width: none !important;
+  }
+}
+
+/* ===== หัวข้อแบบเลื่อนขึ้นจากขอบ: กรอบตัดของแต่ละบรรทัด (เผื่อที่สระบน/ล่างของภาษาไทย) ===== */
+.line-rise {
+  display: block;
+  overflow: clip;
+  padding-block: 0.14em;
+  margin-block: -0.14em;
+}
+.line-rise > span {
+  display: block;
+}
+
+/* ===== ปุ่มหมึก: วงกลมลูกศรที่ปลายปุ่ม ชี้แล้วสีขาวไหลออกจากวงกลมจนเต็มปุ่ม ลูกศรสลับตัว ===== */
+.ink-cta {
+  --mark: 2.75rem;
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: 3.5rem;
+  padding-inline: 1.75rem 0.375rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--color-ink, #111);
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.125rem;
+  transition: color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ink-cta::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  right: calc(0.375rem + var(--mark) / 2);
+  width: var(--mark);
+  height: var(--mark);
+  margin: calc(var(--mark) / -2) calc(var(--mark) / -2) 0 0;
+  border-radius: 50%;
+  background: #fff;
+  transform: scale(0);
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ink-cta-mark {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--mark);
+  height: var(--mark);
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--color-brand, #ffd21f);
+  color: #111;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ink-cta-arrow {
+  position: absolute;
+  width: 45%;
+  height: 45%;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ink-cta-arrow + .ink-cta-arrow {
+  transform: translateX(-170%);
+}
+.ink-cta:focus-visible {
+  outline: 3px solid #111;
+  outline-offset: 3px;
+}
+@media (hover: hover) {
+  .ink-cta:hover {
+    color: #111;
+  }
+  .ink-cta:hover::before {
+    transform: scale(14);
+  }
+  .ink-cta:hover .ink-cta-mark {
+    transform: scale(1.06);
+  }
+  .ink-cta:hover .ink-cta-arrow:first-child {
+    transform: translateX(170%);
+  }
+  .ink-cta:hover .ink-cta-arrow + .ink-cta-arrow {
+    transform: none;
+  }
+}
+.ink-cta:active {
+  transform: scale(0.98);
+}
+
+/* ===== ข้อความม้วนขึ้นเมื่อชี้ (ลิงก์เมนู) ===== */
+.roll {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  line-height: 1.4;
+  vertical-align: bottom;
+}
+.roll > span {
+  display: block;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.roll > span + span {
+  position: absolute;
+  inset: 0;
+  transform: translateY(100%);
+}
+@media (hover: hover) {
+  a:hover > .roll > span:first-child {
+    transform: translateY(-100%);
+  }
+  a:hover > .roll > span + span {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ink-cta::before,
+  .ink-cta-arrow,
+  .roll > span {
+    transition: none;
   }
 }
