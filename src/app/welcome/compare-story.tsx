@@ -5,110 +5,78 @@ import { ChevronsLeftRight } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Reveal } from "@/components/motion/reveal";
 import { Phone, type Screen } from "./app-screens";
-import { Phrases } from "./phrases";
-import { ChatToReceipt, DepositSplit, LeaseTimeline, MonthSummary } from "./story-visuals";
 
-type Chapter = {
-  key: string;
-  /** ธุรกิจที่ยกเป็นตัวอย่าง */
-  biz: string;
-  /** ปัญหาที่เจอจริง (เสียงของคนปล่อยเช่า) */
-  pain: string;
-  title: string;
-  body: string;
-  visual: ReactNode;
-};
-
-/**
- * ปัญหาที่คนปล่อยเช่าเจอบ่อย (จากกระทู้และแบบสำรวจเจ้าของรายเล็ก) + สิ่งที่ Kepz มีจริงในแอป
- * ยกตัวอย่างหลายธุรกิจ: หอพัก ร้านเช่าชุด ร้านเช่ากล้อง แผงตลาด เจ้าของหลายสาขา
- */
-const CHAPTERS: Chapter[] = [
-  {
-    key: "chase",
-    biz: "หอพัก ห้องเช่า",
-    pain: "ถึงสิ้นเดือนทีไร ต้องไล่ทักทวงค่าเช่าทีละห้อง",
-    title: "รู้ทันทีว่าใครยังไม่จ่าย",
-    body: "Kepz ออกบิลทุกห้องที่ถึงรอบในครั้งเดียว ห้องที่ยังไม่จ่ายขึ้นป้ายรอชำระ พอเลยกำหนดก็เปลี่ยนเป็นค้างชำระให้เอง ไม่ต้องจำ",
-    visual: <CompareCard screen="bills" time="08:00" hint />,
-  },
-  {
-    key: "slips",
-    biz: "ร้านเช่าชุด",
-    pain: "ลูกค้าส่งสลิปมาในแชท จะเช็กยอดทีต้องเลื่อนหาย้อนหลัง",
-    title: "รับเงินแล้ว ได้ใบเสร็จทันที",
-    body: "กดรับเงินแล้วใส่ยอด Kepz ออกใบเสร็จ PDF ให้ส่งลูกค้า และเก็บทุกการรับเงินไว้ที่เดียว ย้อนดูได้ทุกรายการ",
-    visual: <ChatToReceipt />,
-  },
-  {
-    key: "deposit",
-    biz: "ร้านเช่ากล้อง อุปกรณ์",
-    pain: "รับมัดจำมาปนกับค่าเช่า พอลูกค้าคืนของ ไม่แน่ใจว่าต้องคืนเท่าไร",
-    title: "เงินประกันแยกไว้ ไม่ปนรายได้",
-    body: "Kepz แยกเงินประกันออกจากค่าเช่าตั้งแต่บิลแรก รู้เสมอว่าถือเงินประกันของใครอยู่เท่าไร ถึงวันคืนก็ไม่ต้องคิดเลขใหม่",
-    visual: <DepositSplit />,
-  },
-  {
-    key: "expiring",
-    biz: "แผงตลาด ที่จอดรถ",
-    pain: "สัญญาหมดไปตั้งแต่เดือนก่อน เพิ่งรู้ตอนผู้เช่าย้ายออก",
-    title: "สัญญาใกล้หมด เห็นก่อนถึงวัน",
-    body: "สัญญาที่ใกล้หมดขึ้นเป็นสีเหลืองบนผังและในรายการ มีเวลาคุยต่อสัญญา หรือหาผู้เช่าใหม่ก่อนที่จะว่าง",
-    visual: <LeaseTimeline />,
-  },
-  {
-    key: "summary",
-    biz: "มีหลายสาขา",
-    pain: "สิ้นเดือนนั่งรวมยอดจากสมุดหลายเล่ม รวมเสร็จก็ยังไม่แน่ใจว่าถูก",
-    title: "สิ้นเดือน รู้ยอดทันที",
-    body: "หน้าภาพรวมรวมรายรับให้ทุกวัน แยกตามสาขา บอกว่าใครรอชำระหรือค้าง และแยกเงินประกันออกจากรายได้",
-    visual: <MonthSummary />,
-  },
+/** แต่ละเรื่อง: ปัญหาแบบเดิม → สิ่งที่ Kepz ทำได้ (ข้อความสั้นที่สุด ให้ภาพเทียบเล่าเรื่องแทน) */
+const TOPICS: { screen: Screen; time: string; tab: string; before: string; after: string }[] = [
+  { screen: "bills", time: "08:00", tab: "ทวงค่าเช่า", before: "ไล่ทักทวงทีละคน", after: "รู้ทันทีว่าใครยังไม่จ่าย" },
+  { screen: "paid", time: "13:20", tab: "ใบเสร็จ", before: "หาสลิปในแชท เขียนใบเสร็จเอง", after: "กดรับเงิน ได้ใบเสร็จ PDF" },
+  { screen: "map", time: "17:45", tab: "ช่องว่าง", before: "เปิดสมุดไล่ดูว่าอะไรว่าง", after: "ดูผังสีเดียวรู้" },
+  { screen: "night", time: "21:00", tab: "ยอดสิ้นเดือน", before: "กดเครื่องคิดเลขรวมเอง", after: "เห็นยอดทุกสาขาทันที" },
 ];
 
-/** ปัญหาจริง → Kepz ช่วยยังไง: แต่ละเรื่องมีภาพประกอบคนละแบบ (ลากเทียบมีแค่เรื่องแรก) */
+/**
+ * แบบเดิม vs Kepz: การ์ดลากเทียบใบเดียว สลับเรื่องด้วยแท็บด้านบน
+ * ข้อความน้อยที่สุด: หัวข้อ 1 บรรทัด + ใต้การ์ดบอกแบบเดิม/แบบ Kepz อย่างละวลีเดียว
+ */
 export function CompareStory() {
+  const [active, setActive] = useState(0);
+  const t = TOPICS[active];
   return (
-    <section id="story" className="scroll-mt-16 overflow-x-clip bg-brand-soft">
-      <div className="mx-auto max-w-6xl px-5 pt-24 pb-24 sm:pt-32 sm:pb-32">
-        <Reveal className="max-w-2xl">
-          <h2 className="text-4xl leading-[1.15] font-bold tracking-tight sm:text-5xl">
-            ปัญหาที่คนปล่อยเช่า<span className="inline-block">เจอจริง</span>{" "}
-            <span className="inline-block">Kepz ช่วยได้</span>
+    <section
+      id="story"
+      className="scroll-mt-16 overflow-x-clip bg-canvas [background-image:radial-gradient(rgb(27_26_23/0.08)_1.5px,transparent_1.5px)] [background-size:26px_26px]"
+    >
+      <div className="mx-auto max-w-3xl px-5 pt-24 pb-24 sm:pt-28 sm:pb-28">
+        <Reveal className="text-center">
+          <h2 className="text-3xl leading-[1.2] font-bold tracking-tight sm:text-5xl">
+            แบบเดิม <span className="text-ink/35">vs</span> Kepz
           </h2>
-          <p className="mt-4 max-w-lg text-lg leading-relaxed text-ink/65">
-            <Phrases text="ไม่ว่าจะให้เช่าห้อง ที่จอด ชุด หรือกล้อง ปัญหาคล้ายกันหมด นี่คือ 5 เรื่องที่เจอบ่อยที่สุด" />
-          </p>
+          <p className="mt-3 text-base text-ink/60 sm:text-lg">ลากเส้นตรงกลางเพื่อเทียบ</p>
         </Reveal>
 
-        <div className="mt-16 space-y-24 sm:mt-20 sm:space-y-32">
-          {CHAPTERS.map((c, i) => (
-            <article
-              key={c.key}
-              className="grid items-center gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-16"
-            >
-              <Reveal variant={i % 2 === 1 ? "right" : "left"} className={clsx(i % 2 === 1 && "lg:order-2")}>
-                <span className="inline-block rounded-full border-2 border-ink bg-white px-3 py-1 text-sm font-semibold">
-                  {c.biz}
-                </span>
-                <p className="hand mt-4 max-w-md text-xl leading-snug text-ink/60 sm:text-2xl">“{c.pain}”</p>
-                <h3 className="mt-4 text-3xl leading-tight font-bold tracking-tight sm:text-4xl">
-                  <Phrases text={c.title} />
-                </h3>
-                <p className="mt-3 max-w-md text-[17px] leading-relaxed text-ink/70">{c.body}</p>
-              </Reveal>
-              <Reveal variant="pop" delay={150}>
-                {c.visual}
-              </Reveal>
-            </article>
-          ))}
-        </div>
+        <Reveal delay={120} className="mt-8">
+          <div role="tablist" aria-label="เลือกเรื่องที่จะเทียบ" className="mx-auto grid max-w-sm grid-cols-2 gap-2 sm:flex sm:max-w-none sm:justify-center">
+            {TOPICS.map((x, i) => (
+              <button
+                key={x.screen}
+                type="button"
+                role="tab"
+                aria-selected={i === active}
+                aria-controls="compare-panel"
+                onClick={() => setActive(i)}
+                className={clsx(
+                  "rounded-full border-2 px-4 py-2 text-sm font-semibold transition sm:text-[15px]",
+                  i === active ? "border-ink bg-ink text-brand" : "border-ink/15 bg-white text-ink/70 hover:border-ink/40 hover:text-ink",
+                )}
+              >
+                {x.tab}
+              </button>
+            ))}
+          </div>
+        </Reveal>
+
+        <Reveal variant="pop" delay={200} className="mt-6">
+          <div id="compare-panel" role="tabpanel" aria-label={t.tab}>
+            {/* key: เปลี่ยนเรื่องแล้วเส้นแบ่งกวาดให้ดูใหม่ */}
+            <CompareCard key={t.screen} screen={t.screen} time={t.time} />
+          </div>
+          <div className="mt-5 grid grid-cols-2 gap-3 text-center text-[15px] sm:text-base">
+            <p className="text-ink/50">
+              <span className="block text-xs font-semibold text-ink/40">แบบเดิม</span>
+              <span className="line-through decoration-ink/30">{t.before}</span>
+            </p>
+            <p className="font-semibold">
+              <span className="block text-xs font-semibold text-ink/50">Kepz</span>
+              {t.after}
+            </p>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
 }
 
-function CompareCard({ screen, time, hint }: { screen: Screen; time: string; hint?: boolean }) {
+function CompareCard({ screen, time }: { screen: Screen; time: string }) {
   const [pos, setPos] = useState(50);
   const [inView, setInView] = useState(false);
   const boxRef = useRef<HTMLDivElement>(null);
@@ -160,7 +128,7 @@ function CompareCard({ screen, time, hint }: { screen: Screen; time: string; hin
     <div className="relative">
       <div
         ref={boxRef}
-        className="relative h-[460px] cursor-ew-resize touch-pan-y overflow-hidden rounded-[2rem] border-2 border-ink shadow-[6px_6px_0_0_#1b1a17] select-none sm:h-[520px]"
+        className="relative h-[440px] cursor-ew-resize touch-pan-y overflow-hidden rounded-3xl shadow-[0_30px_60px_-28px_rgb(0_0_0/0.45)] ring-1 ring-ink/10 select-none sm:h-[500px]"
         onPointerDown={(e) => {
           touched.current = true;
           dragging.current = true;
@@ -176,17 +144,17 @@ function CompareCard({ screen, time, hint }: { screen: Screen; time: string; hin
           <div className="origin-center scale-[0.7] sm:scale-[0.78]">
             <Phone screen={screen} time={time} on={inView} />
           </div>
-          <Label className="right-4 bg-ink text-white">กับ Kepz</Label>
+          <Label className="right-4 bg-ink text-brand">Kepz</Label>
         </div>
 
         {/* ก่อน: สมุดจด (ตัดให้เห็นเฉพาะฝั่งซ้ายของเส้นแบ่ง) */}
         <div
-          className="absolute inset-0 grid place-items-center bg-[#efe9dc]"
+          className="absolute inset-0 grid place-items-center bg-[#e6dfcf]"
           style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
           aria-hidden
         >
           <Notebook screen={screen} />
-          <Label className="left-4 bg-white text-ink">แบบเดิม</Label>
+          <Label className="left-4 bg-white/90 text-ink">แบบเดิม</Label>
         </div>
 
         {/* เส้นแบ่ง + ปุ่มลาก */}
@@ -194,7 +162,7 @@ function CompareCard({ screen, time, hint }: { screen: Screen; time: string; hin
           className="pointer-events-none absolute inset-y-0"
           style={{ left: `${pos}%` }}
         >
-          <div className="absolute inset-y-0 -left-px w-0.5 bg-ink" />
+          <div className="absolute inset-y-0 -left-0.5 w-1 bg-white shadow-[0_0_0_1px_rgb(27_26_23/0.25)]" />
           <input
             type="range"
             min={4}
@@ -207,19 +175,11 @@ function CompareCard({ screen, time, hint }: { screen: Screen; time: string; hin
             aria-label="เลื่อนเปรียบเทียบ แบบเดิมกับเมื่อใช้ Kepz"
             className="peer sr-only"
           />
-          <div className="absolute top-1/2 left-0 grid size-12 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border-2 border-ink bg-white shadow-lg peer-focus-visible:ring-4 peer-focus-visible:ring-brand">
+          <div className="absolute top-1/2 left-0 grid size-12 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border-[3px] border-white bg-ink text-brand shadow-lg peer-focus-visible:ring-4 peer-focus-visible:ring-brand">
             <ChevronsLeftRight className="size-5" strokeWidth={2.5} />
           </div>
         </div>
       </div>
-      {hint && (
-        <p
-          className="hand pointer-events-none absolute right-6 -bottom-10 rotate-[-3deg] text-xl text-[#2d4bc9]"
-          aria-hidden
-        >
-          ลองลากเส้นตรงกลางดู
-        </p>
-      )}
     </div>
   );
 }
@@ -234,7 +194,7 @@ function Label({
   return (
     <span
       className={clsx(
-        "absolute top-4 rounded-full border-2 border-ink px-3 py-1 text-sm font-bold",
+        "absolute bottom-4 rounded-full px-3 py-1 text-sm font-bold shadow-sm",
         className,
       )}
     >
