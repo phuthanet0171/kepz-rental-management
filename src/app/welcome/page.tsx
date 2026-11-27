@@ -4,7 +4,8 @@ import type { CSSProperties } from "react";
 import { ShinyButton } from "@/components/ui/shiny-button";
 import { ArrowDown } from "lucide-react";
 import { CompareStory } from "./compare-story";
-import { KeyRing, RentSign } from "./hero-props";
+import { HeroCards } from "./hero-cards";
+import { RotatingWord } from "./rotating-word";
 import { sriracha } from "@/lib/hand-font";
 import { StartSteps } from "./start-steps";
 import { TagRiver } from "./tag-river";
@@ -22,6 +23,7 @@ export default function WelcomePage() {
     >
       {/* เปิดการเคลื่อนไหวเฉพาะเมื่อ JS พร้อม ถ้าไม่มี JS เนื้อหาแสดงตามปกติ */}
       <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('motion-ready')" }} />
+      <TopBar />
       <Hero />
       <TagRiver />
       <CompareStory />
@@ -37,41 +39,51 @@ export default function WelcomePage() {
   );
 }
 
+/** แถบเมนูลอยแบบเม็ดยาว: กดเข้าสู่ระบบ/เริ่มใช้งานได้ตลอด ไม่ว่าเลื่อนไปถึงไหน */
+function TopBar() {
+  return (
+    <header className="fixed inset-x-0 top-3 z-50 px-3" style={{ paddingTop: "env(safe-area-inset-top)" }}>
+      <nav className="mx-auto flex h-14 max-w-3xl items-center justify-between rounded-full border border-black/5 bg-white/75 pr-2 pl-5 shadow-[0_8px_30px_-12px_rgb(0_0_0/0.25)] backdrop-blur-xl">
+        <Link href="/welcome" className="text-2xl font-bold tracking-tight">
+          kepz<span className="text-brand-strong">.</span>
+        </Link>
+        <div className="flex items-center gap-1">
+          <Link href="/login" className="rounded-full px-4 py-2 text-sm font-semibold hover:bg-ink/5">
+            <span className="roll">
+              <span>เข้าสู่ระบบ</span>
+              <span aria-hidden>เข้าสู่ระบบ</span>
+            </span>
+          </Link>
+          <Link href="/signup" className="rounded-full bg-ink px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-black">
+            เริ่มใช้งาน
+          </Link>
+        </div>
+      </nav>
+    </header>
+  );
+}
+
 function Hero() {
   return (
-    <section className="relative bg-brand">
-      <header
-        className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5"
-        style={{ paddingTop: "env(safe-area-inset-top)" }}
-      >
-        <span className="text-2xl font-bold tracking-tight">
-          kepz<span className="text-white">.</span>
-        </span>
-        <Link href="/login" className="rounded-full px-4 py-2 text-sm font-semibold">
-          <span className="roll">
-            <span>เข้าสู่ระบบ</span>
-            <span aria-hidden>เข้าสู่ระบบ</span>
+    <section className="relative flex min-h-[92svh] flex-col justify-center overflow-hidden bg-brand pt-24">
+      <HeroCards />
+      <div className="relative mx-auto max-w-3xl px-5 pb-28 text-center sm:pb-32">
+        <h1 className="text-[2.4rem] leading-[1.15] font-bold tracking-tight sm:text-6xl">
+          <span className="sr-only">ไม่ว่าคุณจะปล่อยเช่าอะไร ก็จัดการได้ในแบบของคุณ</span>
+          <span aria-hidden className="line-rise" style={intro(0)}>
+            <span>ไม่ว่าคุณจะปล่อยเช่า</span>
           </span>
-        </Link>
-      </header>
-
-      <div className="relative mx-auto max-w-6xl px-5 pt-14 pb-36 text-center sm:pt-20 sm:pb-44">
-        {/* ของแขวนจริงในโลกการปล่อยเช่า ห้อยลงมาจากขอบบน */}
-        <RentSign className="intro absolute top-12 left-0 hidden h-52 lg:block xl:-left-8 xl:h-60" />
-        <KeyRing className="intro absolute top-12 right-0 hidden h-52 lg:block xl:-right-8 xl:h-60" />
-        <KeyRing className="intro mx-auto -mt-8 mb-4 flex h-32 justify-center lg:hidden" />
-        <h1 className="text-[3.1rem] leading-[1.08] font-bold tracking-[-0.03em] sm:text-[6.5rem]">
-          <span className="line-rise" style={intro(0)}>
-            <span>มีอะไรให้เช่า</span>
+          <span aria-hidden className="intro my-2 block text-[3rem] sm:my-3 sm:text-[5.5rem]" style={intro(150)}>
+            <RotatingWord />
           </span>
-          <span className="line-rise" style={intro(110)}>
-            <span>ก็จัดการได้</span>
+          <span aria-hidden className="line-rise" style={intro(260)}>
+            <span>ก็จัดการได้ในแบบของคุณ</span>
           </span>
         </h1>
-        <p className="intro mx-auto mt-7 max-w-md text-lg leading-relaxed text-ink/80 sm:text-xl" style={intro(420)}>
+        <p className="intro mx-auto mt-6 max-w-md text-lg leading-relaxed text-ink/75 sm:text-xl" style={intro(420)}>
           <Phrases text="ออกบิล รับเงิน ดูว่าอะไรว่าง ในมือถือเครื่องเดียว" />
         </p>
-        <div className="intro mt-10 flex justify-center" style={intro(560)}>
+        <div className="intro mt-9 flex justify-center" style={intro(560)}>
           <span className="rainbow-glow w-full max-w-xs sm:w-auto">
             <ShinyButton href="/signup" className="shiny-hero w-full">
               เริ่มใช้งาน Kepz
@@ -80,10 +92,10 @@ function Hero() {
         </div>
       </div>
 
-      {/* ชวนเลื่อนลง: เล็ก จาง ขยับเบาๆ อยู่ล่างสุดของส่วนบน */}
+      {/* ชวนเลื่อนลง: เล็ก จาง ขยับเบาๆ */}
       <a
         href="#story"
-        className="intro absolute bottom-16 left-1/2 flex -translate-x-1/2 flex-col items-center gap-1 text-sm font-medium text-ink/45 transition hover:text-ink sm:bottom-20"
+        className="intro absolute bottom-8 left-1/2 flex -translate-x-1/2 flex-col items-center gap-1 text-sm font-medium text-ink/45 transition hover:text-ink"
         style={intro(900)}
       >
         เลื่อนลง

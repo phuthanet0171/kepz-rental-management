@@ -927,16 +927,19 @@ dialog::backdrop {
   }
 }
 
-/* ===== ของแขวนส่วนบนหน้าแรก (ป้ายให้เช่า / พวงกุญแจ) ===== */
-.prop-swing {
-  transform-origin: 50% 8px;
-}
+/* ===== คำที่สลับในหัวข้อหน้าแรก: คำใหม่เด้งขึ้นจากด้านล่าง ===== */
 @media (prefers-reduced-motion: no-preference) {
-  .prop-swing {
-    animation: key-sway 4.5s ease-in-out infinite;
-    animation-delay: var(--d, 0s);
+  .word-in {
+    animation: word-in 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
   }
-  .prop-swing:hover {
-    animation: key-swing 1.6s cubic-bezier(0.36, 0, 0.3, 1);
+}
+@keyframes word-in {
+  from {
+    opacity: 0;
+    transform: translateY(60%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }

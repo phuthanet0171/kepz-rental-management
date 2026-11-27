@@ -27,7 +27,7 @@ const ROW_B: Tag[] = [
 /** ป้ายเช่าไหลผ่านจอเป็นแนวโค้ง: โค้งเข้ามาจากขอบ แบนราบตรงกลาง แล้วจางหายอีกฝั่ง */
 export function TagRiver() {
   return (
-    <section aria-label="ตัวอย่างสิ่งที่จัดการได้บน Kepz" className="-mt-12 overflow-hidden pb-4">
+    <section aria-label="ตัวอย่างสิ่งที่จัดการได้บน Kepz" className="overflow-hidden pt-2 pb-4">
       <TagRow tags={ROW_A} speed={34} />
       <TagRow tags={ROW_B} speed={-28} />
       <p className="mt-3 px-5 text-center text-[15px] text-ink/55">ตัวอย่างของให้เช่าที่ดูแลบน Kepz ได้ ทั้งรายเดือน รายวัน และรายชั่วโมง</p>
