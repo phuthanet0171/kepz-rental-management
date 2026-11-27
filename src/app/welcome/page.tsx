@@ -6,6 +6,7 @@ import { MiddleDiagram } from "./middle-diagram";
 import { Phrases } from "./phrases";
 import { RotatingWord } from "./rotating-word";
 import { ScrollCue } from "./scroll-cue";
+import { ScrollReset } from "./scroll-reset";
 import { sriracha } from "@/lib/hand-font";
 import { StartSteps } from "./start-steps";
 import { TagRiver } from "./tag-river";
@@ -23,7 +24,14 @@ export default function WelcomePage() {
       className={`${sriracha.variable} min-h-dvh bg-white text-ink`}
     >
       {/* เปิดการเคลื่อนไหวเฉพาะเมื่อ JS พร้อม ถ้าไม่มี JS เนื้อหาแสดงตามปกติ */}
-      <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('motion-ready')" }} />
+      {/* ไม่ให้เบราว์เซอร์คืนตำแหน่งเลื่อนเดิมตอนรีเฟรช (ตั้งไว้ก่อนหน้าแสดง จะได้ไม่เห็นหน้ากระโดด) */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html:
+            "document.documentElement.classList.add('motion-ready');try{history.scrollRestoration='manual'}catch(e){}",
+        }}
+      />
+      <ScrollReset />
       <TopBar />
       <Hero />
       <MiddleDiagram />
