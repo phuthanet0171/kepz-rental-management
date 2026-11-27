@@ -29,9 +29,9 @@ export default function WelcomePage() {
       <MiddleDiagram />
       <CompareStory />
       <StartSteps />
-      <footer className="flex flex-wrap items-center justify-between gap-3 px-5 py-8 text-sm text-ink/55 sm:px-10">
-        <span className="text-lg font-bold text-ink">
-          kepz<span className="text-brand-strong">.</span>
+      <footer className="flex flex-wrap items-center justify-between gap-3 bg-ink px-5 py-8 text-sm text-white/55 sm:px-10">
+        <span className="text-lg font-bold text-white">
+          kepz<span className="text-brand">.</span>
         </span>
         <span>มีอะไรให้เช่า ก็จัดการได้บน Kepz</span>
       </footer>

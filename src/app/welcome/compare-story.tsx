@@ -53,7 +53,7 @@ const CHAPTERS: Chapter[] = [
 /** จากสมุดจดสู่ Kepz: แต่ละเรื่องเป็นการ์ดเปรียบเทียบ ลากเส้นตรงกลางดูแบบเดิมกับแบบใหม่ */
 export function CompareStory() {
   return (
-    <section id="story" className="scroll-mt-16 bg-brand-soft">
+    <section id="story" className="scroll-mt-16 overflow-x-clip bg-brand-soft">
       <div className="mx-auto max-w-6xl px-5 pt-24 pb-10 sm:pt-32">
         <Reveal className="max-w-2xl">
           <h2 className="text-4xl leading-[1.15] font-bold tracking-tight sm:text-6xl">
