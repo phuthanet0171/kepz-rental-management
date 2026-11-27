@@ -77,8 +77,11 @@ function Hero() {
             <span>ก็จัดการได้ในแบบของคุณ</span>
           </span>
         </h1>
-        <p className="intro mx-auto mt-6 max-w-md text-lg leading-relaxed text-ink/75 sm:text-xl" style={intro(420)}>
-          <Phrases text="ออกบิล รับเงิน ดูว่าอะไรว่าง ในมือถือเครื่องเดียว" />
+        <p className="intro mx-auto mt-6 max-w-lg" style={intro(420)}>
+          <span className="block text-lg font-semibold sm:text-xl">ระบบจัดการธุรกิจให้เช่าครบวงจร</span>
+          <span className="mt-1 block text-base leading-relaxed text-ink/70 sm:text-lg">
+            <Phrases text="หอพัก ที่จอดรถ สิ่งของ และรถ จัดการรายการเช่าได้ในที่เดียว" />
+          </span>
         </p>
         <div className="intro mt-9 flex justify-center" style={intro(560)}>
           <span className="rainbow-glow w-full max-w-xs sm:w-auto">
