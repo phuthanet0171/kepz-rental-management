@@ -5,23 +5,23 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import type { ArtKey } from "./rental-art";
 
-type Tag = { title: string; line: string; tone: "paper" | "ink" | "free"; art: ArtKey };
+type Tag = { title: string; line: string; tone: "paper" | "ink" | "brand" | "gray"; art: ArtKey };
 
 const ROW_A: Tag[] = [
-  { title: "ห้อง S-02", line: "ว่าง · ฿1,600/เดือน", tone: "free", art: "storage" },
-  { title: "แผง A12", line: "เสาร์–อาทิตย์ ฿250/วัน", tone: "paper", art: "stall" },
-  { title: "Yaris กข 1234", line: "คืนวันนี้ 18:00", tone: "ink", art: "car" },
-  { title: "ที่จอด P-03", line: "รายเดือน ฿990", tone: "paper", art: "parking" },
-  { title: "ชุดราตรีแดง M", line: "จองแล้ว 14–16 ธ.ค.", tone: "ink", art: "dress" },
-  { title: "เต็นท์ 3×3 ม.", line: "ว่าง 12 จาก 20 หลัง", tone: "free", art: "tent" },
+  { title: "ห้อง S-02", line: "ว่าง · ฿1,600/เดือน", tone: "brand", art: "storage" },
+  { title: "แผง A12", line: "เสาร์–อาทิตย์ ฿250/วัน", tone: "ink", art: "stall" },
+  { title: "Yaris กข 1234", line: "คืนวันนี้ 18:00", tone: "paper", art: "car" },
+  { title: "ที่จอด P-03", line: "รายเดือน ฿990", tone: "gray", art: "parking" },
+  { title: "ชุดราตรีแดง M", line: "จองแล้ว 14–16 ธ.ค.", tone: "brand", art: "dress" },
+  { title: "เต็นท์ 3×3 ม.", line: "ว่าง 12 จาก 20 หลัง", tone: "ink", art: "tent" },
 ];
 const ROW_B: Tag[] = [
-  { title: "กล้อง A7 IV", line: "฿900/วัน + ประกัน ฿5,000", tone: "paper", art: "camera" },
-  { title: "ห้องเช่า 4B", line: "ค้างจ่าย 5 วัน", tone: "ink", art: "dorm" },
-  { title: "โกดัง 2", line: "ว่าง · 40 ตร.ม.", tone: "free", art: "warehouse" },
-  { title: "จักรยาน #07", line: "รายชั่วโมง ฿40", tone: "paper", art: "bike" },
-  { title: "โต๊ะจัดเลี้ยง", line: "ว่าง 64 จาก 100 ตัว", tone: "free", art: "table" },
-  { title: "ห้องประชุม B", line: "จอง 13:00–15:00", tone: "ink", art: "meeting" },
+  { title: "กล้อง A7 IV", line: "฿900/วัน + ประกัน ฿5,000", tone: "gray", art: "camera" },
+  { title: "ห้องเช่า 4B", line: "ค้างจ่าย 5 วัน", tone: "paper", art: "dorm" },
+  { title: "โกดัง 2", line: "ว่าง · 40 ตร.ม.", tone: "ink", art: "warehouse" },
+  { title: "จักรยาน #07", line: "รายชั่วโมง ฿40", tone: "brand", art: "bike" },
+  { title: "โต๊ะจัดเลี้ยง", line: "ว่าง 64 จาก 100 ตัว", tone: "gray", art: "table" },
+  { title: "ห้องประชุม B", line: "จอง 13:00–15:00", tone: "paper", art: "meeting" },
 ];
 
 /** ป้ายเช่าไหลผ่านจอเป็นแนวโค้ง: โค้งเข้ามาจากขอบ แบนราบตรงกลาง แล้วจางหายอีกฝั่ง */
@@ -128,7 +128,8 @@ function RentTag({ tag, tilt, hidden }: { tag: Tag; tilt: number; hidden: boolea
           "relative flex items-center gap-3.5 rounded-[18px] py-3 pr-6 pl-8 sm:gap-4 sm:py-3.5 sm:pr-7 sm:pl-10 shadow-[0_10px_24px_-14px_rgb(22_21_19/0.45)]",
           tag.tone === "paper" && "bg-white text-ink",
           tag.tone === "ink" && "bg-ink text-white",
-          tag.tone === "free" && "bg-[#e3f4ea] text-[#145c33]",
+          tag.tone === "brand" && "bg-brand text-ink ring-2 ring-ink",
+          tag.tone === "gray" && "bg-[#e6e4de] text-ink",
         )}
         style={{ rotate: `${tilt * 0.6}deg` }}
       >

@@ -57,9 +57,9 @@ function Hero() {
 
       <div className="relative mx-auto max-w-6xl px-5 pt-14 pb-36 text-center sm:pt-20 sm:pb-44">
         {/* ของแขวนจริงในโลกการปล่อยเช่า ห้อยลงมาจากขอบบน */}
-        <RentSign className="intro absolute top-0 left-2 hidden w-40 lg:block xl:-left-4 xl:w-48" />
-        <KeyRing className="intro absolute top-0 right-4 hidden w-36 lg:block xl:right-0 xl:w-44" />
-        <KeyRing className="intro mx-auto -mt-8 mb-4 w-24 lg:hidden" />
+        <RentSign className="intro absolute top-12 left-0 hidden h-52 lg:block xl:-left-8 xl:h-60" />
+        <KeyRing className="intro absolute top-12 right-0 hidden h-52 lg:block xl:-right-8 xl:h-60" />
+        <KeyRing className="intro mx-auto -mt-8 mb-4 flex h-32 justify-center lg:hidden" />
         <h1 className="text-[3.1rem] leading-[1.08] font-bold tracking-[-0.03em] sm:text-[6.5rem]">
           <span className="line-rise" style={intro(0)}>
             <span>มีอะไรให้เช่า</span>

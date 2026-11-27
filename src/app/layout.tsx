@@ -26,9 +26,10 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
+// suppressHydrationWarning บน <html>: หน้าแรกเติมคลาส motion-ready ให้ html ก่อน React โหลด (ตั้งใจให้ต่างกัน)
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="th" className={`${thai.variable} h-full antialiased`}>
+    <html lang="th" className={`${thai.variable} h-full antialiased`} suppressHydrationWarning>
       <body className="min-h-full font-sans">{children}</body>
     </html>
   );

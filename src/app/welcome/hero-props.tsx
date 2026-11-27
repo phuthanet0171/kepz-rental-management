@@ -6,8 +6,8 @@
 export function RentSign({ className }: { className?: string }) {
   return (
     <div className={className} aria-hidden>
-      <div className="prop-swing" style={{ ["--d" as string]: "0s" }}>
-        <svg viewBox="0 0 220 230" className="w-full overflow-visible">
+      <div className="prop-swing h-full" style={{ ["--d" as string]: "0s" }}>
+        <svg viewBox="0 0 220 230" className="h-full w-auto overflow-visible">
           {/* ตะปู + เชือกสองเส้น */}
           <circle cx="110" cy="8" r="5" fill="#1b1a17" />
           <path d="M110 8 L40 70 M110 8 L180 70" stroke="#1b1a17" strokeWidth="2.5" fill="none" />
@@ -39,8 +39,8 @@ const ANGLES = [36, 12, -12, -36];
 export function KeyRing({ className }: { className?: string }) {
   return (
     <div className={className} aria-hidden>
-      <div className="prop-swing" style={{ ["--d" as string]: "-1.7s" }}>
-        <svg viewBox="0 0 220 230" className="w-full overflow-visible">
+      <div className="prop-swing h-full" style={{ ["--d" as string]: "-1.7s" }}>
+        <svg viewBox="30 0 160 230" className="h-full w-auto overflow-visible">
           <circle cx="110" cy="8" r="5" fill="#1b1a17" />
           <path d="M110 8 V30" stroke="#1b1a17" strokeWidth="2.5" />
           {/* แต่ละชิ้นห้อยจากห่วงเป็นรูปพัด ไม่ทับกัน */}
