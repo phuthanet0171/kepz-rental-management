@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { Check, Minus, Plus } from "lucide-react";
+import { Check } from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
 import { Reveal } from "@/components/motion/reveal";
 import { ShinyButton } from "@/components/ui/shiny-button";
@@ -14,9 +14,9 @@ const STEPS: { title: string; body: string; preview: ReactNode; tilt: string }[]
     tilt: "lg:-rotate-[0.8deg]",
   },
   {
-    title: "เพิ่มของที่ให้เช่า",
-    body: "บอกว่ามีอะไรให้เช่า กี่ช่อง ราคาเท่าไร เช่น ห้องแอร์ 8 ห้อง เดือนละ 3,500 บาท แล้ว Kepz ตั้งรหัสห้องให้เอง",
-    preview: <UnitsPreview />,
+    title: "วาดผังที่ให้เช่า",
+    body: "วางช่องลงบนผังให้เหมือนสถานที่จริง เช่น ลานจอดรถ 10 ช่อง ช่องละ 1,500 บาท/เดือน แล้วดูได้ทันทีว่าช่องไหนว่าง",
+    preview: <ParkingPlanPreview />,
     tilt: "lg:rotate-[0.6deg]",
   },
   {
@@ -139,54 +139,65 @@ function NamePreview() {
     <div className="text-ink">
       <p className="text-[11px] font-medium text-ink/50">ชื่อกิจการ</p>
       <p className="mt-1 flex items-center rounded-lg border-2 border-ink bg-white px-2.5 py-1.5 text-sm font-semibold">
-        หอพักบ้านสวน
+        ลานจอดรถบ้านสวน
         <span className="caret ml-0.5 h-4 w-0.5 bg-ink" />
       </p>
       <p className="mt-2.5 flex flex-wrap gap-1.5 text-[11px] font-semibold">
-        <span className="rounded-full border-2 border-ink bg-brand px-2 py-0.5">หอพัก</span>
-        <span className="rounded-full border-2 border-ink/15 bg-white px-2 py-0.5 text-ink/60">ที่จอดรถ</span>
+        <span className="rounded-full border-2 border-ink/15 bg-white px-2 py-0.5 text-ink/60">หอพัก</span>
+        <span className="rounded-full border-2 border-ink bg-brand px-2 py-0.5">ที่จอดรถ</span>
         <span className="rounded-full border-2 border-ink/15 bg-white px-2 py-0.5 text-ink/60">แผงตลาด</span>
       </p>
     </div>
   );
 }
 
-/** เหมือนการ์ด "เพิ่มของให้เช่า" ในหน้าตั้งค่ากิจการจริง: ชื่อ จำนวน ราคา คิดราคา และรหัสที่จะได้ */
-function UnitsPreview() {
+/**
+ * เหมือนหน้า "วาดผัง" ของสาขาจริง: ช่องเช่าวางบนตาราง มีทางรถวิ่งและทางเข้า (ไม่ใช่ช่องเช่า)
+ * สีบอกสถานะแบบเดียวกับหน้าห้องและที่จอด: เขียว = ว่าง · ดำ = มีผู้เช่า
+ */
+const SLOTS: [string, boolean][] = [
+  ["P01", false], ["P02", false], ["P03", true], ["P04", false], ["P05", true],
+  ["P06", true], ["P07", false], ["P08", false], ["P09", true], ["P10", false],
+];
+
+function ParkingPlanPreview() {
+  const row = (from: number) => (
+    <div className="grid grid-cols-5 gap-1">
+      {SLOTS.slice(from, from + 5).map(([code, free], i) => (
+        <span
+          key={code}
+          className={clsx(
+            "seq-pop tabular grid h-9 place-items-center rounded-md border-2 text-[9.5px] leading-none font-bold",
+            free ? "border-ok bg-ok-soft text-ok" : "border-ink bg-ink text-white",
+          )}
+          style={{ ["--i" as string]: from + i } as CSSProperties}
+        >
+          {code}
+        </span>
+      ))}
+    </div>
+  );
   return (
-    <div className="rounded-xl border border-line bg-white p-2.5 text-ink">
-      <p className="text-sm font-bold">ห้องแอร์</p>
-      <div className="mt-1.5 grid grid-cols-2 gap-1.5">
-        <div>
-          <p className="text-[10px] text-muted">จำนวน</p>
-          <p className="mt-0.5 flex h-7 items-center justify-between rounded-lg border border-line px-2 text-[11px] text-ink/60">
-            <Minus className="size-3" />
-            <b className="tabular text-sm text-ink">8</b>
-            <Plus className="size-3" />
-          </p>
-        </div>
-        <div>
-          <p className="text-[10px] text-muted">ราคา</p>
-          <p className="tabular mt-0.5 flex h-7 items-center gap-1 rounded-lg border border-line px-2 text-sm font-semibold">
-            <span className="text-[11px] font-normal text-muted">฿</span>3,500
-          </p>
-        </div>
+    <div className="rounded-xl border border-line bg-white p-2 text-ink [background-image:radial-gradient(rgb(27_26_23/0.12)_1px,transparent_1px)] [background-size:10px_10px]">
+      <div className="mb-1.5 flex items-center justify-between text-[9.5px]">
+        <b className="text-[10.5px]">ลานจอด โซน P</b>
+        <span className="flex gap-2 text-muted">
+          <span className="flex items-center gap-1"><i className="size-2 rounded-sm border-2 border-ok bg-ok-soft" />ว่าง</span>
+          <span className="flex items-center gap-1"><i className="size-2 rounded-sm bg-ink" />มีผู้เช่า</span>
+        </span>
       </div>
-      <p className="mt-1.5 grid grid-cols-3 rounded-lg bg-canvas p-0.5 text-center text-[9.5px] font-semibold text-muted">
-        <span className="rounded-md bg-white py-1 text-ink shadow-sm">ต่อเดือน</span>
-        <span className="py-1">ต่อวัน</span>
-        <span className="py-1">ต่อชั่วโมง</span>
-      </p>
-      <p className="mt-2 flex flex-wrap gap-1">
-        {Array.from({ length: 8 }, (_, i) => (
-          <span
-            key={i}
-            className="seq-pop tabular rounded-md border-2 border-ok bg-ok-soft px-1 py-px text-[9.5px] font-bold"
-            style={{ ["--i" as string]: i } as CSSProperties}
-          >
-            A0{i + 1}
-          </span>
-        ))}
+      {row(0)}
+      {/* ทางรถวิ่ง + ทางเข้า: วาดไว้ให้เหมือนสถานที่จริง ไม่ใช่ช่องเช่า */}
+      <div className="my-1 flex h-6 items-center gap-1">
+        <span className="relative flex h-full flex-1 items-center justify-center rounded-md bg-line/80 text-[9px] text-muted">
+          <span aria-hidden className="absolute inset-x-2 top-1/2 border-t-2 border-dashed border-white" />
+          <span className="relative rounded bg-white/80 px-1">ทางรถวิ่ง</span>
+        </span>
+        <span className="grid h-full place-items-center rounded-md bg-brand px-1.5 text-[9px] font-bold">ทางเข้า</span>
+      </div>
+      {row(5)}
+      <p className="mt-1.5 text-[10px] text-muted">
+        10 ช่อง ช่องละ <b className="tabular text-ink">1,500</b> บาท/เดือน
       </p>
     </div>
   );
@@ -197,20 +208,20 @@ function ContractPreview() {
   return (
     <div className="rounded-xl bg-ink p-2.5 text-white">
       <p className="text-[10px] text-white/60">สรุปสัญญา</p>
-      <p className="text-sm font-semibold">A01 ห้องแอร์</p>
+      <p className="text-sm font-semibold">P03 ที่จอดรถ</p>
       <div className="seq-pop mt-2 rounded-lg bg-white/10 p-2 text-[10.5px]" style={{ ["--i" as string]: 2 } as CSSProperties}>
         <p className="mb-1 font-semibold text-brand">ใบวางบิลแรก (ออกให้อัตโนมัติ)</p>
         <p className="flex justify-between">
           <span className="text-white/80">ค่าเช่า 1 เดือน</span>
-          <span className="tabular">3,500</span>
+          <span className="tabular">1,500</span>
         </p>
         <p className="flex justify-between">
           <span className="text-white/80">เงินประกัน</span>
-          <span className="tabular">3,500</span>
+          <span className="tabular">1,500</span>
         </p>
         <p className="mt-1 flex justify-between border-t border-white/20 pt-1 font-semibold">
           <span>รวมที่ต้องชำระ</span>
-          <span className="tabular text-brand">7,000 บาท</span>
+          <span className="tabular text-brand">3,000 บาท</span>
         </p>
       </div>
       <p className="mt-2 rounded-lg bg-brand py-1.5 text-center text-[11px] font-bold text-ink">สร้างสัญญาเช่า</p>
