@@ -890,21 +890,18 @@ dialog::backdrop {
   }
 }
 
-/* ===== ปุ่มส่วนบนหน้าแรก: ขอบสีรุ้งหมุนรอบปุ่ม + แสงรุ้งฟุ้งรอบนอก ===== */
+/* ===== ปุ่มส่วนบนหน้าแรก: แสงสีแบรนด์ (เหลือง-ขาว) วิ่งรอบขอบปุ่มดำ + แสงฟุ้งตามไปด้วย ===== */
 .shiny-cta.shiny-hero {
   border-width: 3px;
   background:
     linear-gradient(var(--shiny-cta-bg), var(--shiny-cta-bg)) padding-box,
     conic-gradient(
         from var(--gradient-angle),
-        #ff5e5e,
-        #ffb347,
-        #ffe14d,
-        #5be38a,
-        #4cc3ff,
-        #8f6bff,
-        #ff6bd6,
-        #ff5e5e
+        #2a2a2a 0 55%,
+        #ffd21f 70%,
+        #ffffff 78%,
+        #ffd21f 86%,
+        #2a2a2a 100%
       )
       border-box;
 }
@@ -916,12 +913,12 @@ dialog::backdrop {
 .rainbow-glow::before {
   content: "";
   position: absolute;
-  inset: -5px;
+  inset: -4px;
   z-index: -1;
   border-radius: 999px;
-  background: conic-gradient(from var(--gradient-angle), #ff5e5e, #ffb347, #ffe14d, #5be38a, #4cc3ff, #8f6bff, #ff6bd6, #ff5e5e);
-  filter: blur(10px) saturate(1.4);
-  opacity: 0.95;
+  background: conic-gradient(from var(--gradient-angle), transparent 0 58%, #ffffff 76%, #fff6c8 84%, transparent 100%);
+  filter: blur(9px);
+  opacity: 0.9;
   animation: gradient-angle 2.6s linear infinite;
 }
 @media (prefers-reduced-motion: reduce) {
