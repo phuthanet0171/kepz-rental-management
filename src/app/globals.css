@@ -838,6 +838,19 @@ dialog::backdrop {
     transform: translate(4px, 5px);
   }
 }
+/* แท่งในภาพประกอบ (เส้นเวลาสัญญา ยอดแต่ละสาขา) ยืดออกจากซ้ายเมื่อเลื่อนถึง */
+@media (prefers-reduced-motion: no-preference) {
+  .motion-ready [data-shown] .bar-grow {
+    transform-origin: left center;
+    animation: bar-grow 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: calc(350ms + var(--i, 0) * 120ms);
+  }
+}
+@keyframes bar-grow {
+  from {
+    transform: scaleX(0);
+  }
+}
 @keyframes caret {
   50% {
     opacity: 0;

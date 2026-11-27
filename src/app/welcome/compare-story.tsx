@@ -1,104 +1,104 @@
 "use client";
 
 import clsx from "clsx";
-import { Check, ChevronsLeftRight, X } from "lucide-react";
+import { ChevronsLeftRight } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Reveal } from "@/components/motion/reveal";
 import { Phone, type Screen } from "./app-screens";
+import { Phrases } from "./phrases";
+import { ChatToReceipt, DepositSplit, LeaseTimeline, MonthSummary } from "./story-visuals";
 
 type Chapter = {
-  screen: Screen;
-  time: string;
+  key: string;
+  /** ธุรกิจที่ยกเป็นตัวอย่าง */
+  biz: string;
+  /** ปัญหาที่เจอจริง (เสียงของคนปล่อยเช่า) */
+  pain: string;
   title: string;
   body: string;
-  before: string;
-  after: string;
+  visual: ReactNode;
 };
 
+/**
+ * ปัญหาที่คนปล่อยเช่าเจอบ่อย (จากกระทู้และแบบสำรวจเจ้าของรายเล็ก) + สิ่งที่ Kepz มีจริงในแอป
+ * ยกตัวอย่างหลายธุรกิจ: หอพัก ร้านเช่าชุด ร้านเช่ากล้อง แผงตลาด เจ้าของหลายสาขา
+ */
 const CHAPTERS: Chapter[] = [
   {
-    screen: "bills",
-    time: "08:00",
-    title: "ออกบิลทั้งเดือน กดครั้งเดียว",
-    body: "ถึงวันเก็บเงิน Kepz รวมห้องที่ถึงรอบไว้ให้ คุณกดออกบิลครั้งเดียว ได้บิลครบทุกห้อง",
-    before: "จดยอดในสมุด แล้วทักไลน์ทวงทีละคน",
-    after: "กดครั้งเดียว ได้บิลครบทุกห้อง",
+    key: "chase",
+    biz: "หอพัก ห้องเช่า",
+    pain: "ถึงสิ้นเดือนทีไร ต้องไล่ทักทวงค่าเช่าทีละห้อง",
+    title: "รู้ทันทีว่าใครยังไม่จ่าย",
+    body: "Kepz ออกบิลทุกห้องที่ถึงรอบในครั้งเดียว ห้องที่ยังไม่จ่ายขึ้นป้ายรอชำระ พอเลยกำหนดก็เปลี่ยนเป็นค้างชำระให้เอง ไม่ต้องจำ",
+    visual: <CompareCard screen="bills" time="08:00" hint />,
   },
   {
-    screen: "paid",
-    time: "13:20",
-    title: "ลูกค้าโอนมา ใบเสร็จพร้อมส่ง",
-    body: "พอลูกค้าโอน คุณกดรับเงินแล้วใส่ยอด Kepz ออกใบเสร็จ PDF ให้ และแยกให้ว่าเงินไหนค่าเช่า เงินไหนเงินประกัน",
-    before: "ไล่หาสลิปในแชท แล้วเขียนใบเสร็จเอง",
-    after: "กดรับเงิน ได้ใบเสร็จ PDF ทันที",
+    key: "slips",
+    biz: "ร้านเช่าชุด",
+    pain: "ลูกค้าส่งสลิปมาในแชท จะเช็กยอดทีต้องเลื่อนหาย้อนหลัง",
+    title: "รับเงินแล้ว ได้ใบเสร็จทันที",
+    body: "กดรับเงินแล้วใส่ยอด Kepz ออกใบเสร็จ PDF ให้ส่งลูกค้า และเก็บทุกการรับเงินไว้ที่เดียว ย้อนดูได้ทุกรายการ",
+    visual: <ChatToReceipt />,
   },
   {
-    screen: "map",
-    time: "17:45",
-    title: "ห้องไหนว่าง ดูภาพเดียวรู้",
-    body: "ผังแสดงทุกห้องเป็นสี ว่าง มีคนเช่า ใกล้หมดสัญญา หรือค้างจ่าย เห็นห้องว่างก็แตะทำสัญญาได้เลย",
-    before: "เปิดสมุดไล่ดู หรือเดินไปดูเอง",
-    after: "เปิดผัง ช่องสีเขียวคือห้องว่าง",
+    key: "deposit",
+    biz: "ร้านเช่ากล้อง อุปกรณ์",
+    pain: "รับมัดจำมาปนกับค่าเช่า พอลูกค้าคืนของ ไม่แน่ใจว่าต้องคืนเท่าไร",
+    title: "เงินประกันแยกไว้ ไม่ปนรายได้",
+    body: "Kepz แยกเงินประกันออกจากค่าเช่าตั้งแต่บิลแรก รู้เสมอว่าถือเงินประกันของใครอยู่เท่าไร ถึงวันคืนก็ไม่ต้องคิดเลขใหม่",
+    visual: <DepositSplit />,
   },
   {
-    screen: "night",
-    time: "21:00",
+    key: "expiring",
+    biz: "แผงตลาด ที่จอดรถ",
+    pain: "สัญญาหมดไปตั้งแต่เดือนก่อน เพิ่งรู้ตอนผู้เช่าย้ายออก",
+    title: "สัญญาใกล้หมด เห็นก่อนถึงวัน",
+    body: "สัญญาที่ใกล้หมดขึ้นเป็นสีเหลืองบนผังและในรายการ มีเวลาคุยต่อสัญญา หรือหาผู้เช่าใหม่ก่อนที่จะว่าง",
+    visual: <LeaseTimeline />,
+  },
+  {
+    key: "summary",
+    biz: "มีหลายสาขา",
+    pain: "สิ้นเดือนนั่งรวมยอดจากสมุดหลายเล่ม รวมเสร็จก็ยังไม่แน่ใจว่าถูก",
     title: "สิ้นเดือน รู้ยอดทันที",
-    body: "หน้าภาพรวมรวมรายรับให้ทุกวัน เงินประกันที่ต้องคืนผู้เช่าแยกไว้ต่างหาก ไม่ปนกับรายได้",
-    before: "กดเครื่องคิดเลขเอง แล้วยังไม่แน่ใจว่าถูก",
-    after: "เปิดหน้าภาพรวม เห็นยอดเลย",
+    body: "หน้าภาพรวมรวมรายรับให้ทุกวัน แยกตามสาขา บอกว่าใครรอชำระหรือค้าง และแยกเงินประกันออกจากรายได้",
+    visual: <MonthSummary />,
   },
 ];
 
-/** จากสมุดจดสู่ Kepz: แต่ละเรื่องเป็นการ์ดเปรียบเทียบ ลากเส้นตรงกลางดูแบบเดิมกับแบบใหม่ */
+/** ปัญหาจริง → Kepz ช่วยยังไง: แต่ละเรื่องมีภาพประกอบคนละแบบ (ลากเทียบมีแค่เรื่องแรก) */
 export function CompareStory() {
   return (
     <section id="story" className="scroll-mt-16 overflow-x-clip bg-brand-soft">
-      <div className="mx-auto max-w-6xl px-5 pt-24 pb-10 sm:pt-32">
+      <div className="mx-auto max-w-6xl px-5 pt-24 pb-24 sm:pt-32 sm:pb-32">
         <Reveal className="max-w-2xl">
-          <h2 className="text-4xl leading-[1.15] font-bold tracking-tight sm:text-6xl">
-            งานที่ต้องทำซ้ำ<span className="inline-block">ทุกเดือน</span> <span className="inline-block">ให้ Kepz ช่วย</span>
+          <h2 className="text-4xl leading-[1.15] font-bold tracking-tight sm:text-5xl">
+            ปัญหาที่คนปล่อยเช่า<span className="inline-block">เจอจริง</span>{" "}
+            <span className="inline-block">Kepz ช่วยได้</span>
           </h2>
           <p className="mt-4 max-w-lg text-lg leading-relaxed text-ink/65">
-            4 งานที่คนปล่อยเช่าทำเป็นประจำ ดูว่าแบบจดสมุดกับแบบใช้ Kepz ต่างกันแค่ไหน
+            <Phrases text="ไม่ว่าจะให้เช่าห้อง ที่จอด ชุด หรือกล้อง ปัญหาคล้ายกันหมด นี่คือ 5 เรื่องที่เจอบ่อยที่สุด" />
           </p>
         </Reveal>
 
-        <div className="mt-14 space-y-20 sm:mt-20 sm:space-y-28">
+        <div className="mt-16 space-y-24 sm:mt-20 sm:space-y-32">
           {CHAPTERS.map((c, i) => (
             <article
-              key={c.screen}
+              key={c.key}
               className="grid items-center gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-16"
             >
-              <Reveal
-                variant={i % 2 === 1 ? "right" : "left"}
-                className={clsx(i % 2 === 1 && "lg:order-2")}
-              >
-                <h3 className="text-3xl leading-tight font-bold tracking-tight sm:text-4xl">
-                  {c.title}
+              <Reveal variant={i % 2 === 1 ? "right" : "left"} className={clsx(i % 2 === 1 && "lg:order-2")}>
+                <span className="inline-block rounded-full border-2 border-ink bg-white px-3 py-1 text-sm font-semibold">
+                  {c.biz}
+                </span>
+                <p className="hand mt-4 max-w-md text-xl leading-snug text-ink/60 sm:text-2xl">“{c.pain}”</p>
+                <h3 className="mt-4 text-3xl leading-tight font-bold tracking-tight sm:text-4xl">
+                  <Phrases text={c.title} />
                 </h3>
-                <p className="mt-4 max-w-md text-[17px] leading-relaxed text-ink/70">
-                  {c.body}
-                </p>
-                <ul className="mt-6 max-w-md space-y-2.5">
-                  <li className="flex items-start gap-3 text-ink/50">
-                    <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-canvas">
-                      <X className="size-3.5" strokeWidth={3} />
-                    </span>
-                    <span className="line-through decoration-ink/30">
-                      {c.before}
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3 font-semibold">
-                    <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-brand">
-                      <Check className="size-3.5" strokeWidth={3} />
-                    </span>
-                    {c.after}
-                  </li>
-                </ul>
+                <p className="mt-3 max-w-md text-[17px] leading-relaxed text-ink/70">{c.body}</p>
               </Reveal>
               <Reveal variant="pop" delay={150}>
-                <CompareCard chapter={c} hint={i === 0} />
+                {c.visual}
               </Reveal>
             </article>
           ))}
@@ -108,7 +108,7 @@ export function CompareStory() {
   );
 }
 
-function CompareCard({ chapter, hint }: { chapter: Chapter; hint: boolean }) {
+function CompareCard({ screen, time, hint }: { screen: Screen; time: string; hint?: boolean }) {
   const [pos, setPos] = useState(50);
   const [inView, setInView] = useState(false);
   const boxRef = useRef<HTMLDivElement>(null);
@@ -174,7 +174,7 @@ function CompareCard({ chapter, hint }: { chapter: Chapter; hint: boolean }) {
         {/* หลัง: ใช้ Kepz */}
         <div className="absolute inset-0 grid place-items-center bg-brand">
           <div className="origin-center scale-[0.7] sm:scale-[0.78]">
-            <Phone screen={chapter.screen} time={chapter.time} on={inView} />
+            <Phone screen={screen} time={time} on={inView} />
           </div>
           <Label className="right-4 bg-ink text-white">กับ Kepz</Label>
         </div>
@@ -185,7 +185,7 @@ function CompareCard({ chapter, hint }: { chapter: Chapter; hint: boolean }) {
           style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
           aria-hidden
         >
-          <Notebook screen={chapter.screen} />
+          <Notebook screen={screen} />
           <Label className="left-4 bg-white text-ink">แบบเดิม</Label>
         </div>
 
